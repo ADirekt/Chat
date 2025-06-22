@@ -1,0 +1,512 @@
+/* Place your CSS styles in this file */
+
+body {
+    text-align: center;
+    background-color: rgb(255, 255, 255);
+}
+
+h1 {
+    text-align: center;
+    font-family: 'Cal Sans';
+    font-weight: lighter;
+    font-size: 25px;
+    color: rgb(0, 0, 0);
+}
+
+h2 {
+    text-align: center;
+    font-family: 'Cal Sans';
+     font-weight: lighter;
+    font-size: 35px;
+    color: rgb(0, 0, 0);
+}
+
+h3 {
+    margin-left: 75px;
+    text-align: left;
+    font-family: 'Cal Sans';
+     font-weight: lighter;
+    font-size: 35px;
+    color: rgb(0, 0, 0);
+}
+
+h4 {
+    margin-left: 75px;
+    text-align: left;
+    font-family: 'Cal Sans';
+    font-weight: lighter;
+    font-size: 25px;
+    color: rgba(0, 0, 0, 0.762);
+    padding-top: -35px;
+    margin-top: -35px;
+    padding-bottom: -15px;
+    margin-bottom: -15px;
+}
+
+p1 {
+    text-align: center;
+    font-family: 'Cal Sans';
+    font-weight: lighter;
+    font-size: 25px;
+    color: rgb(0, 0, 0);
+}
+
+body {
+    margin: 0;
+}
+
+.topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #ffffff;
+    padding: 10px 0;
+    display: flex;
+    justify-content: left;
+    padding-left: 67.5px;
+     padding-right: 67.5px;
+    gap: 10px;
+    outline: 1.5px solid rgb(196, 196, 196);
+    z-index: 1000;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+}
+
+.topblur {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fefdff;
+    padding: 10px 0;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    outline: #d3d3d3 solid 1.5px;
+    z-index: 2000;
+    pointer-events: none;
+    filter:blur(15px);
+
+}
+
+.bottombar {
+    position: fixed;
+    bottom: -35px;
+    left: -50px;
+    filter:blur(35px);
+    width: 100%;
+    background-color: rgba(254, 248, 255, 0.234);
+    padding: 75px 75px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    pointer-events: none;
+    z-index: -1;
+}
+
+
+button {
+    text-align: center;
+    font-family: 'Cal Sans';
+    font-weight:normal;
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0);  
+    border: none;
+    border-radius: 15px;
+    width: 25px;
+    margin-right: 7.5px;
+    outline: 1.5px solid rgb(196, 196, 196);
+    transition: background-color 0.3s, outline 0.3s, margin 0.3s;
+}
+
+.KontoInteraction {
+    text-align: left;
+    display: block;
+    margin-right: 0px;
+    font-family: 'Cal Sans';
+    font-weight:normal;
+    font-size: 15px;
+    color: rgb(0, 0, 0);  
+    border: none;
+    padding-left: 15px;
+    margin-top: 1.5px;
+    border-radius: 15px;
+    width: 185px;
+    height: 35px;
+    background-color: #f5f5f5;
+    margin-left: 75px;
+    outline: 1.5px solid rgb(196, 196, 196);
+    transition: background-color 0.3s, outline 0.3s, margin 0.3s;
+}
+
+.topbar button {
+    font-family: 'Cal Sans';
+    font-weight: lighter;
+    background-color: #ffffff;
+    border-radius: 15px;
+    color: rgb(0, 0, 0);
+    border: none;
+    padding: 5px 15px;
+    cursor: pointer;
+    font-size: 15px;
+    width: auto;
+    margin-right: 0px;
+    animation: buttonGeneral 1s ease-out forwards;
+}
+
+.topbar button:hover {
+    box-shadow: 0px 0px 10px rgba(142, 144, 196, 0.3); 
+    background-color: #ffffff;
+    outline: 1.5px solid rgba(219, 220, 231, 0.479);
+    width: auto;
+    margin-right: 0px;
+}
+
+button:hover {
+    cursor: grab;
+}
+
+button:active{
+    cursor: grabbing;
+}
+
+.topbar .Interaction {
+    width: auto;
+    margin-right: 0px;
+    outline: 1.5px solid rgb(196, 196, 196);
+}
+
+.topbar .InteractionNone {
+    width: auto;
+    margin-right: 0px;
+    outline: none;
+    color: #ffffff00;
+    background-color: #ffffff;
+    box-shadow: 0px 0px 0px rgb(255, 255, 255); 
+}
+
+.topbar .InteractionNone:hover {
+    cursor: auto;
+    outline: none;
+    background-color: #ffffff;
+    box-shadow: 0px 0px 0px rgb(255, 255, 255); 
+}
+
+@keyframes buttonGeneral {
+    from {
+        margin-right: 15px;
+    }
+    to {
+        margin-right: 0px;
+    }
+}
+
+@keyframes buttonMarginTransition {
+    from {
+        margin-right: 15px;
+    }
+    to {
+        margin-right: 7.5px;
+    }
+}
+
+.content {
+    padding: 20px;
+    text-align: center;
+}
+
+@keyframes loadMessages {
+    from {
+        filter: blur(5px);
+        color: #ffffff00;
+    }
+    to {
+        filter: blur(0px);
+        color: #000000;
+    }
+}
+
+@keyframes loadInput {
+    from {
+        bottom: -20px; 
+    }
+    to {
+        bottom: 20px; 
+    }
+}
+
+@keyframes loadSend {
+    from {
+        bottom: -20px; 
+    }
+    to {
+        bottom: 22px; 
+    }
+}
+
+#messages{
+    text-align: left;
+    text-decoration: none; 
+    font-family: 'Arial';
+    list-style: none;
+    font-size: 25px;
+    margin-bottom: 125px;
+    animation: loadMessages 1.5s ease-out forwards;
+    font-weight:normal;
+    border-radius: 15px;
+    background-color: #ffffff7c;
+    margin-left: 25px;
+    margin-right: 25px;
+    padding-top: 35px;
+    padding-bottom: 35px;
+    outline: 1.5px solid rgba(196, 196, 196, 0.686);
+}
+
+#messaage{
+    font-family: 'Poppins';
+    border-radius: 12.5px;
+    padding-left: 15px;
+    width: 450px;
+    height: 45px;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    position: fixed;
+    bottom: 20px; 
+    left: 25px; 
+    border: none;
+    background-color: #ffffff;
+    color: #000000;
+    animation: loadInput 1.5s ease-out forwards;
+    font-weight:lighter;
+    font-size: 17.5px;
+    outline: 1.5px solid rgb(196, 196, 196);
+    transition: background-color 0.1s, outline 0.1s, margin 0.1s;
+    background: linear-gradient(0deg, #fef9ff, #ffffff) border-box;
+}
+
+#messaage2{
+    font-family: 'Poppins';
+    position: fixed;
+    bottom: 20px; 
+    left: 495px; 
+    border-radius: 12.5px;
+    margin-left: 5px;
+    border: none;
+    outline: 1.5px solid rgb(0, 0, 0);
+    width: 100px;
+    height: 45px;
+    background-color: #1d1d1d;
+    color: #ffffff;
+    font-size: 17.5px;
+    transition: background-color 0.1s, outline 0.1s, margin 0.1s, scale 0.1s;
+    animation: loadSend 1s ease-out forwards;
+    font-weight:lighter;
+    scale: 100%;
+    background: linear-gradient(0deg, #2d2d2d, #000000) border-box;
+}
+
+#messaage:hover {
+    outline: 1.5px solid rgb(128, 128, 128);
+}
+
+#messaage2:hover {
+    cursor: grab;
+    outline: 1.5px solid rgb(128, 128, 128);
+    background-color: #484848;
+    scale: 102.5%;
+}
+
+#messaage2:active{
+    cursor: grabbing;
+}
+
+.ImageMessage {
+    max-width: 850px;
+    max-height: 850px;
+    min-width: 150px;
+    min-height: 150px;
+    width: auto;
+    height: auto;
+    border-radius: 12.5px;
+    background-color: #00000000;
+    object-fit: cover; 
+    margin-top: 0px;
+    margin-left: -2.5px;
+    margin-right: -2.5px;
+    margin-bottom: 0px;
+    border-bottom-left-radius: 5px;
+    transition: scale 0.3s ease;
+}
+  
+.messageHeader {
+ 
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background-color: #ffffff00;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    padding-left: 12.5px;
+    padding-right: 12.5px;
+    padding-top: 10px;
+    padding-bottom: 7.5px;
+    margin-left: -15px; 
+}
+
+.messageContent {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background-color: #ffffff;
+    outline: 1.5px solid rgb(196, 196, 196);
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border-top-right-radius: 15px;
+    padding-left: 12.5px;
+    padding-right: 12.5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-left: -5px;
+    margin-right: 35px;
+    min-height: 25px;
+    font-size: 30px;
+    word-break: break-word;
+}
+
+.senderName{
+    color: #000000d5; 
+    margin-left: -7.5px;
+    font-family: 'Cal Sans';
+    font-weight: lighter;
+}
+
+.messageItem {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    min-width: 35px;
+    max-width: max-content;
+    border-bottom: 1px solid #00000000;
+}
+
+.timestamp{
+    color: #00000072;
+    font-family: 'Arial';
+    font-weight: bold;
+}
+  
+.deleteButton {
+    background-color: #ffffff;
+    text-align: center;
+    font-family: 'Cal Sans';
+    font-weight: lighter;
+    font-size: 20px;
+    color:rgba(0, 0, 0, 0.775);
+    border: none;
+    border-radius: 10px;     
+    outline: 1.5px solid rgb(196, 196, 196);
+    transition: background-color 0.3s, outline 0.3s, margin 0.3s, scale 0.3s;
+    width: 35px;
+    height: 35px;
+    margin-right: 5px;
+    margin-left: -2.5px;
+    object-fit: cover; 
+    scale: 100%;
+}
+
+.deleteButton:hover {
+    box-shadow: 0px 0px 10px rgba(142, 144, 196, 0.3); 
+    background-color: #ffffff;
+    outline: 1.5px solid rgba(219, 220, 231, 0.479);
+    scale: 105%;
+    cursor: grab;
+}
+
+#deleteButton:active{
+    cursor: grabbing;
+}
+
+.button-container {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown {
+    font-size: 12.5px;
+    font-family: 'Cal Sans';
+    font-weight: lighter;
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    background-color: rgb(255, 255, 255);
+    color: rgba(0, 0, 0, 0.706);
+    padding: 7.5px 10px;
+    border-radius: 10px;
+    top: 115%; 
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    box-shadow: 0px 0px 10px rgba(26, 26, 34, 0.192); 
+    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+    z-index: 1; 
+     outline: 1.5px solid rgb(196, 196, 196);
+}
+
+.button-container:hover .dropdown {
+    visibility: visible;
+    opacity: 1;
+}
+
+.ProfilePictureSettings {
+    margin-left: 75px;
+    float: left;
+    font-family: 'Cal Sans';
+    font-weight: lighter;
+    font-size: 25px;
+    color: rgba(0, 0, 0, 0.474);
+    border-radius: 12.5px;
+    width: 185px;
+    height: 185px;
+    object-fit: cover; 
+    background-color: #f5f5f5;
+     outline: 1.5px solid rgb(196, 196, 196);
+}
+
+.profilePicture:hover {
+    cursor: default;
+    color: #000000;
+}
+
+.profilePic {
+
+    background-color: #ededed;
+    text-align: center;
+    font-family: 'Cal Sans';
+    font-weight: lighter;
+    font-size: 25px;
+    color: rgb(0, 0, 0);  
+    border: none;
+    border-radius: 52.5px;     
+    transition: background-color 0.3s, outline 0.3s, margin 0.3s, scale 0.3s;
+    width: 35px;
+    height: 35px;
+    margin-right: 5.5px;
+    margin-left: -2.5px;
+    object-fit: cover; 
+    outline: none;
+}
+
+.profilePic:hover{
+    scale: 135%;
+}
+
+img.fullscreenImage {
+    width: 100%;
+    height: 100%; 
+    object-fit:cover;
+    display: block;
+    position: fixed;
+    z-index: -1;
+}
