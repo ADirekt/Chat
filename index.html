@@ -1,1 +1,433 @@
+<!doctype html>
+
+<html>
+    <head>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+        <link id="themeStylesheet" rel="stylesheet" href="styles.css">
+        <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+         <link href='https://fonts.googleapis.com/css?family=Cal+Sans' rel='stylesheet'>
+        <script src="https://www.gstatic.com/firebasejs/6.6.1/firebase-app.js"></script>
+        <link href='https://fonts.googleapis.com/css?family=Konkhmer%20Sleokchher' rel='stylesheet'>
+        <script src="https://www.gstatic.com/firebasejs/6.6.1/firebase-database.js"></script>
+
+        <title>Direkt</title>
+        <!--<link id="favicon" rel="icon" type="image/x-icon" href="Icon.ico">-->
+
+    </head>
+   
+    <body>
+
+      <div class="bottombar">
+      </div>
+  
+      <div class="topbar">
+        <div class="button-container">
+          <button class="Interaction" id="Konto">Konto<span class="dropdown">Endre kontoinstillinger</span></button>
+        </div>
+  
+        <div class="button-container">
+          <button class="Interaction" id="Slett">Slett<span class="dropdown">Slett alle meldinger</span></button>
+        </div>
+
+        <div class="button-container">
+          <button class="Interaction" id="Bakgrunn">Bakgrunn<span class="dropdown">Velg bakgrunnsbilde</span></button>
+        </div>
+
+              <div class="button-container">
+          <button class="Interaction" id="LightDark">Stil<span class="dropdown">Lys og mørk modus</span></button>
+        </div>
+        
+        <div class="button-container">
+          <button class="Interaction" id="Admin">Administrator<span class="dropdown">Trenger passord</span></button>
+        </div>
+  
+        <button class="InteractionNone">NIL</button>
+  
+        <div class="button-container">
+          <button class="Interaction" id="Math">Cool math games<span class="dropdown">Fete mattespill</span></button>
+        </div>
+        
+        <div class="button-container">
+          <button class="Interaction" id="Cookie">Cookie clicker<span class="dropdown">Cookies</span></button>
+        </div>
+
+      </div>
+
+      <div class="topblur">
+      </div>
+
+     
+  
+  <br><br><br>
+  <img id="fullscreenImageId" class="fullscreenImage" src="https://onlinepngtools.com/images/examples-onlinepngtools/empty-transparent.png">
+ 
+<script>
+
+var firebaseConfig = {
+    apiKey: "AIzaSyDLFPVG8LUVlQJ8hfu1zfnnsCshZgWBxq4",
+    authDomain: "d-chat-df9bc.firebaseapp.com",
+    databaseURL: "https://d-chat-df9bc-default-rtdb.firebaseio.com",
+    projectId: "d-chat-df9bc",
+    storageBucket: "d-chat-df9bc.appspot.com",
+    messagingSenderId: "242428408517",
+    appId: "1:242428408517:web:fdf99c3b7e1fb4338076ac",
+    measurementId: "G-1LMEYJL4FK"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+function generateUserId() {
+  return Math.floor(Math.random() * 1000000);
+}
+
+var userId = localStorage.getItem('UserId');
+function createAndSaveNewUserId() {
+    userId = generateUserId();
+    localStorage.setItem('UserId', userId);
+
+    firebase.database().ref("userIds/" + userId).set({
+        name: "Gjest",
+        picture: "None",
+        admin: "false",
+    });
+}
+
+if (!userId) {
+    createAndSaveNewUserId();
+} else {
+    firebase.database().ref("userIds/" + userId).once("value").then(snapshot => {
+        if (!snapshot.exists()) {
+            createAndSaveNewUserId();
+        }
+    });
+}
+
+var myName = "Gjest"
+firebase.database().ref("userIds/" + userId + "/name").once("value").then(snapshot => {
+    myName = snapshot.val() || "Gjest"; 
+});
+
+var profilBilde = "None"
+firebase.database().ref("userIds/" + userId + "/picture").once("value").then(snapshot => {
+    profilBilde = snapshot.val() || "None"; 
+});
+
+var adminCommands = "false"
+firebase.database().ref("userIds/" + userId + "/admin").once("value").then(snapshot => {
+    adminCommands = snapshot.val() || "false"; 
+});
+
+var isDark = "false";
+var modeDark = false;
+isDark = localStorage.getItem('dark');
+
+var front = "Reset";
+var back = "Horsey";
+
+document.getElementById("Konto").onclick = function() {Konto()};
+function Konto(){
+  window.location.href = "konto.html"; 
+}
+
+document.getElementById("Admin").onclick = function() {CheckAdmin()};
+function CheckAdmin(){
+   
+  var adminC = prompt("Passord trengs");
+  if (adminC == back) {
+    
+    if(adminCommands == "false"){    
+       firebase.database().ref("userIds/" + userId).update({
+            admin: "true"
+        });
+    }else{    
+       firebase.database().ref("userIds/" + userId).update({
+            admin: "false"
+        });
+    }
+
+    location.reload();
+  };
+}
+
+document.getElementById("Slett").onclick = function() {
+  Slett();
+};
+
+function Slett() {
+  var savingC = prompt("Passord trengs");
+  if (savingC == front) {
+    alert("Javel da");
+    firebase.database().ref("messages").remove();
+    //firebase.database().ref("public").remove();
+    //firebase.database().ref("userIds").remove();
+    clearNotification();
+    location.reload();
+  }
+}
+
+function formatRelativeTime(timestamp) {
+  const [datePart, timePart] = timestamp.split(", ");
+  const [day, month, year] = datePart.split("/").map(Number);
+  const [hours, minutes] = timePart.split(":").map(Number);
+  const messageDate = new Date(year, month - 1, day, hours, minutes);
+
+  const now = new Date();
+  const diffMs = now - messageDate;
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+  if (
+    now.toDateString() === messageDate.toDateString()
+  ) {
+    return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+  } else if (diffDays === 1) {
+    return "1 dag siden";
+  } else if (diffDays === 0) {
+    return "Idag";
+  } else {
+    return `${diffDays} dager siden`;
+  }
+}
+
+function sendMessage() {
+  scrollToBottom();
+  var message = document.getElementById("messaage").value;
+  var timestamp = new Date().toLocaleString('en-GB', {
+    hour12: false,
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+
+  firebase.database().ref("messages").push().set({
+    userId: userId,
+    message: message,
+    timestamp: timestamp
+  });
+
+  document.getElementById("messaage").value = "";
+  return false;
+}
+
+firebase.database().ref("messages").on("child_added", function (snapshot) {
+  var messageData = snapshot.val();
+  var messageUserId = messageData.userId;
+  var messageKey = snapshot.key;
+  
+  var li = document.createElement("li");
+  li.id = "message-" + messageKey;
+  li.className = "messageItem";
+  
+  li.innerHTML = `
+    <div class='messageHeader'>
+      <span class='senderName' style='font-weight: normal; font-size: 25px;'>&nbsp;</span>
+      <span class='timestamp' style='font-weight: normal; font-size: 17.5px; padding-top: 6.5px;'>&nbsp;${formatRelativeTime(messageData.timestamp)}</span>
+    </div>
+    <div class='messageContent'></div>
+  `;
+
+  document.getElementById("messages").appendChild(li);
+  firebase.database().ref("userIds/" + messageUserId).once("value").then(userSnapshot => {
+    var userInfo = userSnapshot.val() || {};
+    var isCurrentUser = messageUserId === userId;
+    var isAdmin = userInfo.admin === "true";
+    var profilePicUrl = userInfo.picture || "None";
+    var senderName = userInfo.name || "Unknown";
+
+    var headerHtml = "";
+
+    if (isCurrentUser || adminCommands === "true") {
+      headerHtml += `<button class='deleteButton' data-id='${messageKey}' onclick='deleteMessage(this);'>...</button>`;
+    }
+
+    if (isCurrentUser) {
+    }else{
+      if (document.hidden) {
+        addNotification();
+      }
+    }
+    
+    if (isAdmin) {
+      headerHtml += `<img src='https://static.vecteezy.com/system/resources/thumbnails/047/309/973/small/verified-badge-profile-icon-png.png' class='profilePic' alt='' style='width: 20px; height: 20px;' />`;
+    }
+
+    if (profilePicUrl !== "None" && isValidImageUrl(profilePicUrl)) {
+      headerHtml += `<img src='${profilePicUrl}' class='profilePic' alt='' style='width: 35px; height: 35px;' />`;
+    }
+
+    headerHtml += `<span class='senderName' style='font-weight: normal; font-size: 25px;'>&nbsp;${senderName}</span>`;
+    headerHtml += `<span class='timestamp' style='font-weight: normal; font-size: 17.5px; padding-top: 6.5px;'>&nbsp;${formatRelativeTime(messageData.timestamp)}</span>`;
+   
+    li.querySelector(".messageHeader").innerHTML = headerHtml;
+
+    var message = messageData.message;
+    var imageRegex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif|svg))/i;
+    var linkRegex = /(https?:\/\/[^\s]+)/g;
+
+    var contentHtml = "";
+
+    if (imageRegex.test(message)) {
+      contentHtml = `<img src='${message}' class='ImageMessage' alt='${message}' onclick='copyImageText(this)' onerror='handleImageError(this, "${messageKey}")'>`;
+    } else {
+      var formattedMessage = message.replace(linkRegex, "<a href='$1' target='_blank' style='color: #4e95ff; text-decoration: underline;'>$1</a>");
+      contentHtml = formattedMessage;
+    }
+
+    li.querySelector(".messageContent").innerHTML = contentHtml;
+  });
+
+  updateEmptyMessageNotice();
+
+});
+
+function isValidImageUrl(url) {
+  var imageRegex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif|svg))/i;
+  return imageRegex.test(url);
+}
+
+function handleImageError(imgElement, messageId) {
+  document.getElementById("message-" + messageId).remove();
+  firebase.database().ref("messages").child(messageId).remove();
+}
+
+function deleteMessage(self) {
+  var messageId = self.getAttribute("data-id");
+  firebase.database().ref("messages").child(messageId).remove()
+    .then(() => {
+      document.getElementById("message-" + messageId)?.remove();
+    })
+    .catch(error => {
+      console.error("Error deleting message:", error);
+    });
+}
+
+firebase.database().ref("messages").on("child_removed", function (snapshot) {
+  document.getElementById("message-" + snapshot.key).innerHTML = "";
+});
+
+function updateEmptyMessageNotice() {
+  var messagesList = document.getElementById("messages");
+  var emptyNotice = document.getElementById("emptyMessageNotice");
+  if (messagesList.getElementsByTagName("li").length === 0) {
+    emptyNotice.style.display = "block";
+  } else {
+    emptyNotice.style.display = "none";
+  }
+}
+
+function copyImageText(imageElement) {
+  const textToCopy = imageElement.alt;
+  const tempTextArea = document.createElement("textarea");
+  tempTextArea.value = textToCopy;
+  document.body.appendChild(tempTextArea);
+  tempTextArea.select();
+  document.execCommand("copy");
+  document.body.removeChild(tempTextArea);
+  alert("Kopiert bildelenke");
+}
+
+function addNotification() {
+  //document.getElementById("favicon").href = "Notif.ico";
+}
+
+function clearNotification() {
+  //document.getElementById("favicon").href = "Icon.ico";
+}
+
+function scrollToBottom() {
+        window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: 'smooth'
+    });
+}
+
+window.addEventListener('focus', function() {
+    scrollToBottom()
+    clearNotification();
+});
+
+window.addEventListener('click', function() {
+    clearNotification();
+});
+
+window.addEventListener('mousemove', function() {
+    clearNotification();
+});
+
+document.getElementById("Cookie").addEventListener("click", function() {
+    window.open("https://orteil.dashnet.org/cookieclicker/", "_blank");
+});
+
+document.getElementById("Math").addEventListener("click", function() {
+    window.open("https://www.coolmathgames.com/", "_blank");
+});
+
+document.getElementById("LightDark").addEventListener("click", function() {
+    toggleTheme();  
+});
+
+if(isDark == "true"){
+    isDark = "false"
+    modeDark = false;
+    toggleTheme();
+}
+
+function toggleTheme() {
+    if(isDark == "true"){    
+        isDark = "false"
+        modeDark = false;
+    }else{
+        isDark = "true"
+        modeDark = true;
+    }
+
+    document.getElementById("themeStylesheet").setAttribute("href", modeDark ? "darkstyles.css" : "styles.css");
+    localStorage.setItem('dark', isDark);
+}
+
+document.getElementById("Bakgrunn").onclick = function() {Bakgrunn()};
+function Bakgrunn(){
+  var nyttBakgrunnsbilde = prompt("Bytt bakgrunnsbilde");   
+  if (nyttBakgrunnsbilde && isValidImageUrl(nyttBakgrunnsbilde)) {
+        
+  firebase.database().ref("public").update({
+    "backgroundImage": nyttBakgrunnsbilde
+  });           
+  }else{
+  firebase.database().ref("public").update({
+    "backgroundImage": "none"
+  });
+}
+
+}
+
+firebase.database().ref("public").on("value", function(snapshot) {
+  var data = snapshot.val();
+  if (data && data.backgroundImage && data.backgroundImage !== "none") {
+    document.getElementById("fullscreenImageId").src = data.backgroundImage;
+  }else{
+    document.getElementById("fullscreenImageId").src = "https://onlinepngtools.com/images/examples-onlinepngtools/empty-transparent.png";
+  }
+});
+ 
+</script>
+      <ul id="messages"><p1 id="emptyMessageNotice">Vær den første til å skrive noe</p1></ul>
+        <form onsubmit="return sendMessage();">
+        <input id="messaage" placeholder="Skriv" autocomplete="off">
+        <input id="messaage2" type="submit">
+      </form>
+      
+      <div class="bottombar">
+      </div>
+
+      <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+    </body>
+</html>
+
+
+
 
