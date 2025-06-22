@@ -1,0 +1,199 @@
+<!doctype html>
+
+<html>
+    <head>
+
+       <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+        <link id="themeStylesheet" rel="stylesheet" href="styles.css">
+        <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+         <link href='https://fonts.googleapis.com/css?family=Cal+Sans' rel='stylesheet'>
+        <script src="https://www.gstatic.com/firebasejs/6.6.1/firebase-app.js"></script>
+        <link href='https://fonts.googleapis.com/css?family=Konkhmer%20Sleokchher' rel='stylesheet'>
+        <script src="https://www.gstatic.com/firebasejs/6.6.1/firebase-database.js"></script>
+
+        <title>Konto</title>
+        <!--<link rel="icon" type="image/x-icon" href="Icon.ico">-->
+        
+    </head>
+   
+    <body>
+
+    <br><br><br><br><br>
+    <h3>Brukernavn:</h3>
+    <h4 id="usernameDisplay"></h4>
+
+    <h3>Bruker ID:</h3>
+    <h4 id="useridDisplay"></h4>
+
+    <br><br>
+    <button class="KontoInteraction" id="Brukernavn">Endre Brukernavn</button>
+    
+    <br>
+    <button class="KontoInteraction" id="Profilbilde">Endre Profilbilde</button> 
+
+    <br>
+    <img class="ProfilePictureSettings" id="profilepictureDisplay" src="" alt="">  
+
+    <div class="bottombar">
+      </div>
+  
+      <div class="topbar">
+        <div class="button-container">
+          <button class="Interaction" id="Tilbake">Tilbake til chat<span class="dropdown">Gå tilbake</span></button>
+        </div>
+      </div>
+
+      <div class="topblur">
+    </div>   
+
+</body>
+
+<script>
+
+var firebaseConfig = {
+    apiKey: "AIzaSyDLFPVG8LUVlQJ8hfu1zfnnsCshZgWBxq4",
+    authDomain: "d-chat-df9bc.firebaseapp.com",
+    databaseURL: "https://d-chat-df9bc-default-rtdb.firebaseio.com",
+    projectId: "d-chat-df9bc",
+    storageBucket: "d-chat-df9bc.appspot.com",
+    messagingSenderId: "242428408517",
+    appId: "1:242428408517:web:fdf99c3b7e1fb4338076ac",
+    measurementId: "G-1LMEYJL4FK"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+function generateUserId() {
+  return Math.floor(Math.random() * 1000000);
+}
+
+var userId = localStorage.getItem('UserId');
+function createAndSaveNewUserId() {
+    userId = generateUserId();
+    localStorage.setItem('UserId', userId);
+
+    firebase.database().ref("userIds/" + userId).set({
+        name: "Gjest",
+        picture: "None",
+        admin: "false",
+        dark: "false"
+    });
+
+    document.getElementById("useridDisplay").textContent = userId
+}
+
+if (!userId) {
+    createAndSaveNewUserId();
+} else {
+    firebase.database().ref("userIds/" + userId).once("value").then(snapshot => {
+        if (!snapshot.exists()) {
+            createAndSaveNewUserId();
+        }else{
+            document.getElementById("useridDisplay").textContent = userId
+        }
+    });
+}
+
+var myName = "Gjest"
+firebase.database().ref("userIds/" + userId + "/name").once("value").then(snapshot => {
+    myName = snapshot.val() || "Gjest"; 
+    document.getElementById("usernameDisplay").textContent = myName
+});
+
+var profilBilde = "None"
+var storedBilde = "None"
+firebase.database().ref("userIds/" + userId + "/picture").once("value").then(snapshot => {
+    profilBilde = snapshot.val() || "None"; 
+    storedBilde = snapshot.val() || "None"; 
+    document.getElementById("profilepictureDisplay").src = storedBilde;
+});
+
+var isDark = "false";
+var modeDark = false;
+firebase.database().ref("userIds/" + userId + "/dark").once("value").then(snapshot => {
+    isDark = snapshot.val() || "false"; 
+});
+
+document.getElementById("Brukernavn").onclick = function() {Brukernavn()};
+function Brukernavn() {
+    
+    const bannedWords = ["Alan"]; 
+    var nyttBrukerNavn = prompt("Bytt brukernavn");
+
+    if (nyttBrukerNavn !== null) {
+        for (let word of bannedWords) {
+            let regex = new RegExp(word, 'i');
+            if (regex.test(nyttBrukerNavn)) {
+                alert("Hold kjeft jonas");
+                return; 
+            }
+        }
+
+        myName = "Gjest"; 
+        myName = nyttBrukerNavn;
+       
+        firebase.database().ref("userIds/" + userId).update({
+            name: myName
+        });
+
+        document.getElementById("usernameDisplay").textContent = myName;
+        document.getElementById("useridDisplay").textContent = userId;
+    }
+}
+
+document.getElementById("Profilbilde").onclick = function() {Profilbilde()};
+function Profilbilde(){
+
+    var nyttProfilBilde = prompt("Bytt profilbilde");   
+    if (nyttProfilBilde) {
+    var img = new Image();
+    img.onload = function() {
+        document.getElementById("profilepictureDisplay").src = nyttProfilBilde;
+        firebase.database().ref("userIds/" + userId).update({
+            picture: nyttProfilBilde
+        });
+     };
+    img.onerror = function() {
+        document.getElementById("profilepictureDisplay").src = "None";
+        firebase.database().ref("userIds/" + userId).update({
+            picture: "None"
+        });
+    };
+    img.src = nyttProfilBilde;
+    } else {
+    document.getElementById("profilepictureDisplay").src = "None";
+        firebase.database().ref("userIds/" + userId).update({
+            picture: "None"
+        });
+    }
+}
+
+document.getElementById("Tilbake").onclick = function() {Tilbake()};
+function Tilbake(){
+    window.location.href = "index.html"; 
+}
+
+var isDark = "false";
+var modeDark = false;
+isDark = localStorage.getItem('dark');
+
+if(isDark == "true"){
+    isDark = "false"
+    modeDark = false;
+    toggleTheme();
+}
+
+function toggleTheme() {
+    if(isDark == "true"){    
+        isDark = "false"
+        modeDark = false;
+    }else{
+        isDark = "true"
+        modeDark = true;
+    }
+
+    document.getElementById("themeStylesheet").setAttribute("href", modeDark ? "darkstyles.css" : "styles.css");
+}
+
+</script>
