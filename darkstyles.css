@@ -7,7 +7,7 @@ body {
 
 h1 {
     text-align: center;
-    font-family: 'Cal Sans';
+    font-family: 'Arial';
     font-weight: lighter;
     font-size: 25px;
     color: rgb(255, 255, 255);
@@ -15,7 +15,7 @@ h1 {
 
 h2 {
     text-align: center;
-    font-family: 'Cal Sans';
+    font-family: 'Arial';
      font-weight: lighter;
     font-size: 35px;
     color: rgb(255, 255, 255);
@@ -24,7 +24,7 @@ h2 {
 h3 {
     margin-left: 75px;
     text-align: left;
-    font-family: 'Cal Sans';
+    font-family: 'Arial';
      font-weight: lighter;
     font-size: 35px;
     color: rgb(255, 255, 255);
@@ -33,7 +33,7 @@ h3 {
 h4 {
     margin-left: 75px;
     text-align: left;
-    font-family: 'Cal Sans';
+    font-family: 'Arial';
     font-weight: lighter;
     font-size: 25px;
     color: rgba(255, 255, 255, 0.762);
@@ -45,7 +45,7 @@ h4 {
 
 p1 {
     text-align: center;
-    font-family: 'Cal Sans';
+    font-family: 'Arial';
     font-weight: lighter;
     font-size: 25px;
     color: rgb(255, 255, 255);
@@ -106,7 +106,7 @@ body {
 
 button {
     text-align: center;
-    font-family: 'Cal Sans';
+    font-family: 'Arial';
     font-weight:normal;
     font-size: 15px;
     color: rgba(255, 255, 255, 0);  
@@ -122,7 +122,7 @@ button {
     text-align: left;
     display: block;
     margin-right: 0px;
-    font-family: 'Cal Sans';
+    font-family: 'Arial';
     font-weight:normal;
     font-size: 15px;
     color: rgb(255, 255, 255);  
@@ -139,7 +139,7 @@ button {
 }
 
 .topbar button {
-    font-family: 'Cal Sans';
+    font-family: 'Arial';
     font-weight: lighter;
     background-color: rgb(17, 18, 22);
     border-radius: 15px;
@@ -262,7 +262,7 @@ button:active{
 }
 
 #messaage{
-    font-family: 'Poppins';
+    font-family: 'Arial';
     border-radius: 12.5px;
     padding-left: 15px;
     width: 450px;
@@ -283,7 +283,7 @@ button:active{
 }
 
 #messaage2{
-    font-family: 'Poppins';
+    font-family: 'Arial';
     position: fixed;
     bottom: 22px; 
     left: 495px; 
@@ -373,7 +373,7 @@ button:active{
 .senderName{
     color: #ffffffd5;
     margin-left: -7.5px;
-    font-family: 'Cal Sans';
+    font-family: 'Arial';
     font-weight: lighter;
 }
 
@@ -394,7 +394,7 @@ button:active{
   
 .deleteButton {
     text-align: center;
-    font-family: 'Cal Sans';
+    font-family: 'Arial';
     font-weight: lighter;
     font-size: 20px;
     color:rgb(196, 196, 196);
@@ -430,7 +430,7 @@ button:active{
 
 .dropdown {
     font-size: 12.5px;
-    font-family: 'Cal Sans';
+    font-family: 'Arial';
     font-weight: lighter;
     visibility: hidden;
     opacity: 0;
@@ -457,7 +457,7 @@ button:active{
 .ProfilePictureSettings {
     margin-left: 75px;
     float: left;
-    font-family: 'Cal Sans';
+    font-family: 'Arial';
     font-weight: lighter;
     font-size: 25px;
     color: rgba(0, 0, 0, 0.474);
@@ -478,7 +478,7 @@ button:active{
 
     background-color: #000000;
     text-align: center;
-    font-family: 'Cal Sans';
+    font-family: 'Arial';
     font-weight: lighter;
     font-size: 25px;
     color: rgb(0, 0, 0);  
