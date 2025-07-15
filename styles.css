@@ -345,8 +345,8 @@ button:active{
     align-items: center;
     gap: 5px;
     background-color: #ffffff00;
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
     padding-left: 12.5px;
     padding-right: 12.5px;
     padding-top: 10px;
@@ -361,9 +361,9 @@ button:active{
     background-color: #ffffff;
     outline: 1.5px solid rgb(196, 196, 196);
     border-bottom-left-radius: 5px;
-    border-top-left-radius: 15px;
-    border-bottom-right-radius: 15px;
-    border-top-right-radius: 15px;
+    border-top-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+    border-top-right-radius: 25px;
     padding-left: 12.5px;
     padding-right: 12.5px;
     padding-top: 10px;
