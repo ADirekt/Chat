@@ -254,7 +254,7 @@ button:active{
     margin-bottom: 125px;
     animation: loadMessages 1.5s ease-out forwards;
     font-weight:normal;
-    border-radius: 15px;
+    border-radius: 25px;
     background-color: #ffffff7c;
     margin-left: 25px;
     margin-right: 25px;
@@ -266,7 +266,7 @@ button:active{
 #messaage{
     font-family: 'Arial';
     border-radius: 12.5px;
-    padding-left: 15px;
+    padding-left: 25px;
     width: 450px;
     height: 45px;
     margin-bottom: 0px;
