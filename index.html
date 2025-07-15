@@ -3,7 +3,7 @@
 <html>
     <head>
  
-        <link rel="stylesheet" href="styles.css">
+        <link id="themeStylesheet" rel="stylesheet" href="styles.css">
         <script src="https://www.gstatic.com/firebasejs/6.6.1/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/6.6.1/firebase-database.js"></script>
         <title>Direkt</title>
@@ -35,8 +35,6 @@
         <div class="button-container">
           <button class="Interaction" id="Admin">Administrator<span class="dropdown">Trenger passord</span></button>
         </div>
-  
-        <button class="InteractionNone">NIL</button>
 
       </div>
 
@@ -106,8 +104,8 @@ var isDark = "false";
 var modeDark = false;
 isDark = localStorage.getItem('dark');
 
-var front = "Reset";
-var back = "Horsey";
+var front = "Slett";
+var back = "Dutch";
 
 document.getElementById("Konto").onclick = function() {Konto()};
 function Konto(){
@@ -354,12 +352,14 @@ function toggleTheme() {
     if(isDark == "true"){    
         isDark = "false"
         modeDark = false;
+        document.getElementById("themeStylesheet").setAttribute("href", isDark ? "styles.css" : "darkstyles.css" ) 
     }else{
         isDark = "true"
         modeDark = true;
+        document.getElementById("themeStylesheet").setAttribute("href", isDark ? "darkstyles.css" : "styles.css") 
+        
     }
 
-    document.getElementById("themeStylesheet").setAttribute("href", modeDark ? "darkstyles.css" : "styles.css");
     localStorage.setItem('dark', isDark);
 }
 
@@ -395,11 +395,6 @@ firebase.database().ref("public").on("value", function(snapshot) {
         <input id="messaage2" type="submit">
       </form>
       
-      <div class="bottombar">
-      </div>
-
-      <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-
     </body>
 </html>
 
