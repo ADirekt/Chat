@@ -12,6 +12,8 @@ img.fullscreenImage {
     display: block;
     position: fixed;
     z-index: -1;
+    user-select: none;
+    pointer-events: none;
 }
 
 p1 {
@@ -92,6 +94,17 @@ h2 {
 
     color: rgba(0, 0, 0, 0.474);
     outline: 1.5px solid rgba(112, 113, 122, 0.185);
+    transition: scale 0.2s;
+}
+
+.kontoProfile:hover{
+    scale: 105%;
+    cursor: grab;
+}
+
+.kontoProfile:active{
+    scale: 110%;
+    cursor: grabbing;
 }
 
 .konto {
@@ -431,7 +444,6 @@ h2 {
 
 #deleteButton:active{
     cursor: grabbing;
-
 }
 
 .dropdown {
@@ -485,5 +497,71 @@ h2 {
 
 .profilePic:hover{
     scale: 135%;
+    cursor: grab;
+}
+
+.profilePic:active{
+    scale: 150%;
+    cursor: grabbing;
+}
+
+.profileBadge {
+    background-color: #ededed;
+    text-align: center;
+    font-family: 'Arial';
+    font-weight: lighter;
+    font-size: 25px;
+    color: rgb(0, 0, 0);  
+    border: none;
+    border-radius: 52.5px;     
+    transition: background-color 0.3s, outline 0.3s, margin 0.3s, scale 0.3s;
+    width: 35px;
+    height: 35px;
+    margin-right: 5.5px;
+    margin-left: -2.5px;
+    object-fit: cover; 
+    outline: none;
+}
+
+.profileBadge:hover{
+    box-shadow: 0px 0px 25px rgba(9, 107, 255, 0.425);
+    scale: 135%;
+}
+
+br {
+  user-select: none;
+  cursor: grabbing;
+}
+
+#modal {
+    position: fixed; 
+    inset: 0;
+    background: rgba(0, 0, 0, 0.719);
+    backdrop-filter: blur(1px);
+    display: none;           
+    align-items: center; 
+    justify-content: center;
+    z-index: 5;
+}
+
+#box {
+  background: white;
+  padding: 2em;
+  width: clamp(250px, 80vw, 400px);
+  aspect-ratio: 2.5 / 3;              
+  border-radius: 40px;
+  outline: 1.5px solid rgba(196, 196, 196, 0.445);
+  overflow: auto;
+  box-sizing: border-box;
+  z-index: 6;
+  max-height: 90vh; 
+}
+
+@media (max-width: 600px) {
+  #box {
+    width: 90vw;
+    aspect-ratio: auto;
+    max-height: 80vh;
+  }
 }
 
