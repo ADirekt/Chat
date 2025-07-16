@@ -311,12 +311,11 @@ function copyImageText(imageElement) {
 }
 
 function addNotification() {
-  document.getElementById("favicon").href = "notif.ico";
+  document.querySelector("link[rel*='icon']").href = "notif.ico";
 }
 
 function clearNotification() {
-  document.getElementById("favicon").href = "icon.ico";
-    
+  document.querySelector("link[rel*='icon']").href = "icon.ico";
 }
 
 function scrollToBottom() {
