@@ -3,43 +3,40 @@
 <html>
     <head>
 
-       
-      <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">  
         <link id="themeStylesheet" rel="stylesheet" href="styles.css">
-        <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
-         <link href='https://fonts.googleapis.com/css?family=Cal+Sans' rel='stylesheet'>
         <script src="https://www.gstatic.com/firebasejs/6.6.1/firebase-app.js"></script>
-        <link href='https://fonts.googleapis.com/css?family=Konkhmer%20Sleokchher' rel='stylesheet'>
         <script src="https://www.gstatic.com/firebasejs/6.6.1/firebase-database.js"></script>
-
-
-        <title>Konto</title>
-        <!--<link rel="icon" type="image/x-icon" href="Icon.ico">-->
+        <link rel="icon" href="icon.ico" type="image/x-icon">
+        <title>Konto - Direkt</title>
         
-    </head>
-   
+    </head> 
     <body>
 
     <br><br><br><br><br>
     <h1>Brukernavn:</h1>
     <h2 id="usernameDisplay"></h2>
 
-    <h1>Administrator:</h1>
-    <h2>Nei</h2>
+    <h1>Biografi:</h1>
+    <h2 id="bioDisplay"></h2>
+
+    <!--<h1>Passord:</h1>
+    <h2 id="passwordDisplay"></h2>-->
 
     <h1>Bruker ID:</h1>
     <h2 id="useridDisplay"></h2>
 
     <br>
     <button class="konto" id="Brukernavn">Endre Brukernavn</button>
-    
+
+    <br>
+    <button class="konto" id="Biografi">Endre Biografi</button> 
+
     <br>
     <button class="konto" id="Profilbilde">Endre Profilbilde</button> 
 
     <br>
-    <img class="kontoProfile" id="profilepictureDisplay" src="" alt="">  
-
+    <img class="kontoProfile" id="profilepictureDisplay" src="" alt="">
+    
     <div class="bottombar">
       </div>
   
@@ -51,6 +48,16 @@
 
       <div class="topblur">
     </div>   
+<br><br><br><br><br><br><br><br>
+    <!--
+    <button class="konto" id="Passord">Endre Passord</button> 
+    <button class="konto" id="LoggUt" style="color:#ff2929";>Logg av Konto</button>  
+
+    <br>
+    <br>
+    <button class="konto" id="ByttKonto" style="color:#ff2929";>Bytt Konto</button> -->
+
+    <button class="konto" id="SlettKonto" style="color:#ff2929";>Slett Konto</button> 
 
 </body>
 
@@ -73,19 +80,23 @@ function generateUserId() {
   return Math.floor(Math.random() * 1000000);
 }
 
+function generatePassword() {
+  return Math.floor(Math.random() * 10000);
+}
+
 var userId = localStorage.getItem('UserId');
 function createAndSaveNewUserId() {
     userId = generateUserId();
+    randomPassword = generatePassword();
     localStorage.setItem('UserId', userId);
 
     firebase.database().ref("userIds/" + userId).set({
-        name: "Gjest",
+        name: "Anonym",
+        bio: "Ingenting",
+        password: "XsPE" + randomPassword + "E43",
         picture: "None",
         admin: "false",
-        dark: "false"
     });
-
-    document.getElementById("useridDisplay").textContent = userId
 }
 
 if (!userId) {
@@ -100,10 +111,22 @@ if (!userId) {
     });
 }
 
-var myName = "Gjest"
+var myName = "Anonym"
 firebase.database().ref("userIds/" + userId + "/name").once("value").then(snapshot => {
-    myName = snapshot.val() || "Gjest"; 
+    myName = snapshot.val() || "Anonym"; 
     document.getElementById("usernameDisplay").textContent = myName
+});
+
+var myBio = "Ingenting"
+firebase.database().ref("userIds/" + userId + "/bio").once("value").then(snapshot => {
+    myBio = snapshot.val() || "Ingenting"; 
+    document.getElementById("bioDisplay").textContent = myBio
+});
+
+var myPassword = userId
+firebase.database().ref("userIds/" + userId + "/password").once("value").then(snapshot => {
+    myPassword = snapshot.val() || "None"; 
+    document.getElementById("passwordDisplay").textContent = myPassword
 });
 
 var profilBilde = "None"
@@ -114,28 +137,22 @@ firebase.database().ref("userIds/" + userId + "/picture").once("value").then(sna
     document.getElementById("profilepictureDisplay").src = storedBilde;
 });
 
-var isDark = "false";
-var modeDark = false;
-firebase.database().ref("userIds/" + userId + "/dark").once("value").then(snapshot => {
-    isDark = snapshot.val() || "false"; 
-});
-
 document.getElementById("Brukernavn").onclick = function() {Brukernavn()};
 function Brukernavn() {
     
-    const bannedWords = ["Alan"]; 
-    var nyttBrukerNavn = prompt("Bytt brukernavn");
+    const bannedWords = ["Alan", "AIan"]; 
+    var nyttBrukerNavn = prompt("Rediger brukernavn");
 
     if (nyttBrukerNavn !== null) {
         for (let word of bannedWords) {
             let regex = new RegExp(word, 'i');
             if (regex.test(nyttBrukerNavn)) {
-                alert("Hold kjeft jonas");
+                alert("Nei");
                 return; 
             }
         }
 
-        myName = "Gjest"; 
+        myName = "Anonym"; 
         myName = nyttBrukerNavn;
        
         firebase.database().ref("userIds/" + userId).update({
@@ -143,14 +160,92 @@ function Brukernavn() {
         });
 
         document.getElementById("usernameDisplay").textContent = myName;
+        document.getElementById("bioDisplay").textContent = myBio;
+        document.getElementById("passwordDisplay").textContent = myPassword;
         document.getElementById("useridDisplay").textContent = userId;
     }
 }
 
+document.getElementById("Biografi").onclick = function() {Biografi()};
+function Biografi() {
+    
+    const bannedWords = ["Alan", "AIan"]; 
+    var nyttBiografi = prompt("Rediger biografi");
+
+    if (nyttBiografi !== null) {
+        for (let word of bannedWords) {
+            let regex = new RegExp(word, 'i');
+            if (regex.test(nyttBiografi)) {
+                alert("Nei");
+                return; 
+            }
+        }
+
+        myBio = "Ingenting"; 
+        myBio = nyttBiografi;
+       
+        firebase.database().ref("userIds/" + userId).update({
+            bio: myBio
+        });
+
+        document.getElementById("usernameDisplay").textContent = myName;
+        document.getElementById("bioDisplay").textContent = myBio;
+        document.getElementById("passwordDisplay").textContent = myPassword;
+        document.getElementById("useridDisplay").textContent = userId;
+    }
+}
+
+//document.getElementById("Passord").onclick = function() {Passord()};
+//function Passord() {
+//    
+ //   const bannedWords = ["Alan", "AIan"]; 
+//    var nyttPassord = prompt("Rediger passord");
+//
+ //   if (nyttPassord !== null) {
+//        for (let word of bannedWords) {
+//            let regex = new RegExp(word, 'i');
+//            if (regex.test(nyttPassord)) {
+//                alert("Nei");
+//                return; 
+//            }
+//        }
+//
+ //       myPassword = userId; 
+//        myPassword = nyttPassord;
+ //      
+ //       firebase.database().ref("userIds/" + userId).update({
+//            password: myPassword
+ //       });
+//
+ //       document.getElementById("usernameDisplay").textContent = myName;
+//        document.getElementById("bioDisplay").textContent = myBio;
+ //       document.getElementById("passwordDisplay").textContent = myPassword;
+//        document.getElementById("useridDisplay").textContent = userId;
+//    }
+//}
+
+//document.getElementById("LoggUt").onclick = function() {LoggUt()};
+//function LoggUt() {
+//    localStorage.setItem('UserId', 0);
+//    window.location.href = "index.html"; 
+//}
+
+document.getElementById("SlettKonto").onclick = function() {SlettKonto()};
+function SlettKonto() {
+
+    firebase.database().ref("userIds/" + userId).remove();
+    localStorage.setItem('UserId', 0);
+    window.location.href = "index.html"; 
+}
+
+//document.getElementById("ByttKonto").onclick = function() { ByttKonto(); };
+//function ByttKonto() {
+//}
+
 document.getElementById("Profilbilde").onclick = function() {Profilbilde()};
 function Profilbilde(){
 
-    var nyttProfilBilde = prompt("Bytt profilbilde");   
+    var nyttProfilBilde = prompt("Rediger profilbilde");   
     if (nyttProfilBilde) {
     var img = new Image();
     img.onload = function() {
