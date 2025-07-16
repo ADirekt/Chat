@@ -18,31 +18,46 @@
       <div class="topbar">
         <div class="button-container">
           <button class="Interaction" id="Konto">Konto<span class="dropdown">Endre kontoinstillinger</span></button>
-        </div>
+      </div>
   
-        <div class="button-container">
-          <button class="Interaction" id="Slett">Slett<span class="dropdown">Slett alle meldinger</span></button>
-        </div>
+      <!--<div class="button-container">
+        <button class="Interaction" id="Bakgrunn">Bakgrunn<span class="dropdown">Velg bakgrunnsbilde</span></button>
+      </div>-->
 
-        <!--<div class="button-container">
-          <button class="Interaction" id="Bakgrunn">Bakgrunn<span class="dropdown">Velg bakgrunnsbilde</span></button>
-        </div>-->
+      <div class="button-container">
+        <button class="Interaction" id="LightDark">Stil<span class="dropdown">Lys og mørk modus</span></button>
+      </div>
 
-        <div class="button-container">
-          <button class="Interaction" id="LightDark">Stil<span class="dropdown">Lys og mørk modus</span></button>
-        </div>
+      <div class="button-container">
+        <button class="Interaction" id="Slett">Slett<span class="dropdown">Slett alle meldinger</span></button>
+      </div>
         
-        <div class="button-container">
-          <button class="Interaction" id="Admin">Administrator<span class="dropdown">Trenger passord</span></button>
-        </div>
+      <div class="button-container">
+        <button class="Interaction" id="Admin">Administrator<span class="dropdown">Bli administrator</span></button>
+      </div>
 
       </div>
 
-    <div class="topblur">
-    </div>
+<div class="topblur">
+</div>
 
-  <br><br><br>
-  <img id="fullscreenImageId" class="fullscreenImage" src="https://onlinepngtools.com/images/examples-onlinepngtools/empty-transparent.png">
+<br><br><br>
+<img id="fullscreenImageId" class="fullscreenImage" src="https://onlinepngtools.com/images/examples-onlinepngtools/empty-transparent.png">
+
+<div id="modal" onclick="if(event.target===this) this.style.display='none'">
+  <div id="box">
+    
+    <img class="kontoProfile" id="profilepictureDisplay" src="" alt="" style="margin-left: 0px; padding-left: 0px;">
+    <br> <br> <br> <br> <br> <br> <br>
+    
+    <h1 style="margin-left: 0px; padding-left: 0px;">Brukernavn:</h1>
+    <h2 id="usernameDisplay" style="margin-left: 0px; padding-left: 0px;"></h2>
+
+    <h1 style="margin-left: 0px; padding-left: 0px;">Biografi:</h1>
+    <h2 id="bioDisplay" style="margin-left: 0px; padding-left: 0px;"></h2>
+
+  </div>
+</div>
  
 <script>
 
@@ -63,13 +78,20 @@ function generateUserId() {
   return Math.floor(Math.random() * 1000000);
 }
 
+function generatePassword() {
+  return Math.floor(Math.random() * 10000);
+}
+
 var userId = localStorage.getItem('UserId');
 function createAndSaveNewUserId() {
     userId = generateUserId();
+    randomPassword = generatePassword();
     localStorage.setItem('UserId', userId);
 
     firebase.database().ref("userIds/" + userId).set({
-        name: "Gjest",
+        name: "Anonym",
+        bio: "Ingenting",
+        password: "XsPE" + randomPassword + "E43",
         picture: "None",
         admin: "false",
     });
@@ -85,9 +107,9 @@ if (!userId) {
     });
 }
 
-var myName = "Gjest"
+var myName = "Anonym"
 firebase.database().ref("userIds/" + userId + "/name").once("value").then(snapshot => {
-    myName = snapshot.val() || "Gjest"; 
+    myName = snapshot.val() || "Anonym"; 
 });
 
 var profilBilde = "None"
@@ -115,7 +137,7 @@ function Konto(){
 document.getElementById("Admin").onclick = function() {CheckAdmin()};
 function CheckAdmin(){
    
-  var adminC = prompt("Passord trengs");
+  var adminC = prompt("Trenger Passord for å Fortsette");
   if (adminC == back) {
     
     if(adminCommands == "false"){    
@@ -137,7 +159,7 @@ document.getElementById("Slett").onclick = function() {
 };
 
 function Slett() {
-  var savingC = prompt("Passord trengs");
+  var savingC = prompt("Trenger Passord for å Fortsette");
   if (savingC == front) {
     alert("Javel da");
     firebase.database().ref("messages").remove();
@@ -232,11 +254,12 @@ firebase.database().ref("messages").on("child_added", function (snapshot) {
     }
     
     if (isAdmin) {
-      headerHtml += `<img src='https://static.vecteezy.com/system/resources/thumbnails/047/309/973/small/verified-badge-profile-icon-png.png' class='profilePic' alt='' style='width: 20px; height: 20px;' />`;
+      headerHtml += `<img src='https://static.vecteezy.com/system/resources/thumbnails/047/309/973/small/verified-badge-profile-icon-png.png' class='profileBadge' alt='' style='width: 20px; height: 20px;' />`;
     }
 
     if (profilePicUrl !== "None" && isValidImageUrl(profilePicUrl)) {
-      headerHtml += `<img src='${profilePicUrl}' class='profilePic' alt='' style='width: 35px; height: 35px;' />`;
+      //headerHtml += `<img src='${profilePicUrl}' class='profilePic' alt='' style='width: 35px; height: 35px;' />`;
+      headerHtml += `<img onclick="openProfileModal('${messageUserId}')" src='${profilePicUrl}' class='profilePic' alt='' style='width: 35px; height: 35px; cursor:pointer;' />`;
     }
 
     headerHtml += `<span class='senderName' style='font-weight: normal; font-size: 25px;'>&nbsp;${senderName}</span>`;
@@ -263,6 +286,26 @@ firebase.database().ref("messages").on("child_added", function (snapshot) {
   updateEmptyMessageNotice();
 
 });
+
+function openProfileModal(userId) {
+  const modal = document.getElementById('modal');
+  const profilePic = document.getElementById('profilepictureDisplay');
+  const username = document.getElementById('usernameDisplay');
+  const bio = document.getElementById('bioDisplay');
+
+  profilePic.src = '';
+  username.textContent = '';
+  bio.textContent = '';
+  modal.style.display = 'flex';
+
+firebase.database().ref('userIds/' + userId).once('value').then(snapshot => {
+    const data = snapshot.val() || {};
+    profilePic.src = (data.picture && isValidImageUrl(data.picture)) ? data.picture : 'default-profile.png';
+    username.textContent = data.name || 'Anonym';
+    bio.textContent = data.bio || 'Ingen biografi tilgjengelig.';
+  });
+}
+
 
 function isValidImageUrl(url) {
   var imageRegex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif|svg))/i;
@@ -397,7 +440,6 @@ firebase.database().ref("public").on("value", function(snapshot) {
       
     </body>
 </html>
-
 
 
 
