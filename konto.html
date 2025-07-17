@@ -228,7 +228,7 @@ function Biografi() {
 //document.getElementById("LoggUt").onclick = function() {LoggUt()};
 //function LoggUt() {
 //    localStorage.setItem('UserId', 0);
-//    window.location.href = "index.html"; 
+//     window.location.href = "/Chat/"; 
 //}
 
 document.getElementById("SlettKonto").onclick = function() {SlettKonto()};
@@ -236,7 +236,7 @@ function SlettKonto() {
 
     firebase.database().ref("userIds/" + userId).remove();
     localStorage.setItem('UserId', 0);
-    window.location.href = "index.html"; 
+    window.location.href = "/Chat/"; 
 }
 
 //document.getElementById("ByttKonto").onclick = function() { ByttKonto(); };
