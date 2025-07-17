@@ -127,7 +127,7 @@ firebase.database().ref("userIds/" + userId + "/bio").once("value").then(snapsho
 var myPassword = "None"
 firebase.database().ref("userIds/" + userId + "/password").once("value").then(snapshot => {
     myPassword = snapshot.val() || "None"; 
-    document.getElementById("passwordDisplay").textContent = myPassword
+    //document.getElementById("passwordDisplay").textContent = myPassword
 });
 
 var profilBilde = "None"
@@ -162,7 +162,7 @@ function Brukernavn() {
 
         document.getElementById("usernameDisplay").textContent = myName;
         document.getElementById("bioDisplay").textContent = myBio;
-        document.getElementById("passwordDisplay").textContent = myPassword;
+        //document.getElementById("passwordDisplay").textContent = myPassword;
         document.getElementById("useridDisplay").textContent = userId;
     }
 }
@@ -191,7 +191,7 @@ function Biografi() {
 
         document.getElementById("usernameDisplay").textContent = myName;
         document.getElementById("bioDisplay").textContent = myBio;
-        document.getElementById("passwordDisplay").textContent = myPassword;
+        //document.getElementById("passwordDisplay").textContent = myPassword;
         document.getElementById("useridDisplay").textContent = userId;
     }
 }
