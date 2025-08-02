@@ -14,29 +14,27 @@
 
     <br><br><br><br><br>
     <h1>Brukernavn:</h1>
+    <button class="konto" style="margin-left: 250px; width: 125px; margin-top: -40px; margin-bottom: -25px;" id="Brukernavn">Rediger</button>
     <h2 id="usernameDisplay"></h2>
 
     <h1>Biografi:</h1>
+    <button class="konto" style="margin-left: 250px; width: 125px; margin-top: -40px; margin-bottom: -25px;" id="Biografi">Rediger</button>
     <h2 id="bioDisplay"></h2>
 
     <!--<h1>Passord:</h1>
     <h2 id="passwordDisplay"></h2>-->
 
     <h1>Bruker ID:</h1>
+    <button class="konto" style="margin-left: 250px; width: 150px; margin-top: -40px; margin-bottom: -25px; color:#ff4444;" id="SlettKonto">Slett Konto</button>
     <h2 id="useridDisplay"></h2>
 
     <br>
-    <button class="konto" id="Brukernavn">Endre Brukernavn</button>
+    <img onclick="Profilbilde()" class="kontoProfile" id="profilepictureDisplay" src="" alt="" style="width: 200px; height: 200px;">
+    <br><br><br><br><br><br><br>
 
     <br>
-    <button class="konto" id="Biografi">Endre Biografi</button> 
+    <button class="konto" style="margin-left: 250px; width: 125px;" id="Profilbilde">Rediger</button>
 
-    <br>
-    <button class="konto" id="Profilbilde">Endre Profilbilde</button> 
-
-    <br>
-    <img class="kontoProfile" id="profilepictureDisplay" src="" alt="">
-    
     <div class="bottombar">
       </div>
   
@@ -48,9 +46,7 @@
 
       <div class="topblur">
     </div>   
-        
-    <br><br><br><br><br><br><br><br>
-        
+    
     <!--<button class="konto" id="Passord">Endre Passord</button> 
     <button class="konto" id="LoggUt" style="color:#ff2929";>Logg av Konto</button>  
 
@@ -58,7 +54,8 @@
     <br>
     <button class="konto" id="ByttKonto" style="color:#ff2929";>Bytt Konto</button> -->
 
-    <button class="konto" id="SlettKonto" style="color:#ff2929";>Slett Konto</button> 
+    <br><br><br><br>
+    <ul style="display: none;" id="userList"></ul>
 
 </body>
 
@@ -96,6 +93,7 @@ function createAndSaveNewUserId() {
         bio: "Ingenting",
         password: "XsPE" + randomPassword + "E43",
         picture: "None",
+        friends: ["None"],
         admin: "false",
     });
 }
@@ -112,6 +110,7 @@ if (!userId) {
     });
 }
 
+const bannedWords = ["Alan", "AIan", "A|an", "Dorent"]; 
 var myName = "Anonym"
 firebase.database().ref("userIds/" + userId + "/name").once("value").then(snapshot => {
     myName = snapshot.val() || "Anonym"; 
@@ -138,11 +137,18 @@ firebase.database().ref("userIds/" + userId + "/picture").once("value").then(sna
     document.getElementById("profilepictureDisplay").src = storedBilde;
 });
 
+var adminCommands = "false"
+firebase.database().ref("userIds/" + userId + "/admin").once("value").then(snapshot => {
+    adminCommands = snapshot.val() || "false"; 
+    if(adminCommands == "true"){
+      document.getElementById("userList").style.display = "flex";
+    }
+
+});
+
 document.getElementById("Brukernavn").onclick = function() {Brukernavn()};
 function Brukernavn() {
-    
-    const bannedWords = ["Alan", "AIan"]; 
-    var nyttBrukerNavn = prompt("Rediger brukernavn");
+    var nyttBrukerNavn = prompt("Endre brukernavn");
 
     if (nyttBrukerNavn !== null) {
         for (let word of bannedWords) {
@@ -169,9 +175,7 @@ function Brukernavn() {
 
 document.getElementById("Biografi").onclick = function() {Biografi()};
 function Biografi() {
-    
-    const bannedWords = ["Alan", "AIan"]; 
-    var nyttBiografi = prompt("Rediger biografi");
+    var nyttBiografi = prompt("Endre biografi");
 
     if (nyttBiografi !== null) {
         for (let word of bannedWords) {
@@ -199,8 +203,7 @@ function Biografi() {
 //document.getElementById("Passord").onclick = function() {Passord()};
 //function Passord() {
 //    
- //   const bannedWords = ["Alan", "AIan"]; 
-//    var nyttPassord = prompt("Rediger passord");
+//    var nyttPassord = prompt("Endre passord");
 //
  //   if (nyttPassord !== null) {
 //        for (let word of bannedWords) {
@@ -296,5 +299,49 @@ function toggleTheme() {
 
     document.getElementById("themeStylesheet").setAttribute("href", modeDark ? "darkstyles.css" : "styles.css");
 }
+
+    const db = firebase.database();
+    const userList = document.getElementById('userList');
+
+    function loadUserIDs() {
+      db.ref('/userIds').once('value')
+        .then(snapshot => {
+          const data = snapshot.val();
+          userList.innerHTML = '';
+          if (!data) {
+            userList.innerHTML = '<li>No user IDs found</li>';
+            return;
+          }
+
+          Object.keys(data).forEach(userID => {
+            const li = document.createElement('li');
+            li.textContent = userID;
+
+            const btn = document.createElement('button');
+            btn.classList.add("konto");
+            btn.style.width = "75px"
+            btn.style.height = "25px"
+            btn.style.fontSize = "10px"
+            btn.textContent = 'Delete';
+            btn.onclick = () => {
+              if (confirm(`Delete user ID "${userID}"?`)) {
+                deleteUserID(userID);
+              }
+            };
+
+            li.appendChild(btn);
+            userList.appendChild(li);
+          });
+        })
+    }
+
+    function deleteUserID(userID) {
+      db.ref(`/userids/${userID}`).remove()
+        .then(() => {
+          loadUserIDs();
+        })
+    }
+
+    loadUserIDs();
 
 </script>
