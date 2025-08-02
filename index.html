@@ -18,47 +18,66 @@
       <div class="topbar">
         <div class="button-container">
           <button class="Interaction" id="Konto">Konto<span class="dropdown">Endre kontoinstillinger</span></button>
-      </div>
-  
-      <!--<div class="button-container">
-        <button class="Interaction" id="Bakgrunn">Bakgrunn<span class="dropdown">Velg bakgrunnsbilde</span></button>
-      </div>-->
+        </div>
 
-      <div class="button-container">
-        <button class="Interaction" id="LightDark">Stil<span class="dropdown">Lys og mørk modus</span></button>
-      </div>
+        <div class="button-container">
+          <button class="Interaction" id="LightDark">Stil<span class="dropdown">Endre bakgrunnsfarge</span></button>
+        </div>
 
-      <div class="button-container">
-        <button class="Interaction" id="Slett">Slett<span class="dropdown">Slett alle meldinger</span></button>
-      </div>
+        <div class="button-container">
+          <button class="Interaction" id="Slett">Slett<span class="dropdown">Slett hele chatten</span></button>
+        </div>
         
-      <div class="button-container">
-        <button class="Interaction" id="Admin">Administrator<span class="dropdown">Bli administrator</span></button>
-      </div>
+        <div class="button-container">
+          <button class="Interaction" id="Admin">Admin<span class="dropdown">Bli administrator</span></button>
+        </div>
+
+        <div class="button-container">
+          <button style="display: none;" class="Interaction" id="Bakgrunn">Bakgrunn<span class="dropdown">Endre bakgrunnsbilde</span></button>
+        </div>
+
+        <div class="button-container">
+          <img src='' id="myProfilePic" class='profilePic' alt='' style='width: 27.5px; height: 27.5px; margin-left: -10px; margin-right: -5px; cursor:pointer; display: none;'></img>
+        </div>
+
+        <!--<img src='' id="myProfilePic" class='profilePic' alt='' style='width: 27.5px; height: 27.5px; margin-left: -10px; margin-right: -5px; cursor:pointer; display: none;'>-->
+
+        <!--<div class="button-container">
+          <img class="Interaction" style="width: 25px; height: 25px; border-radius: 25px;" src="https://i.ytimg.com/vi/YB3pJlMgYXc/maxresdefault.jpg">
+        </div>-->
 
       </div>
 
-<div class="topblur">
-</div>
+      <div class="topblur">
+      </div>
 
-<br><br><br>
-<img id="fullscreenImageId" class="fullscreenImage" src="https://onlinepngtools.com/images/examples-onlinepngtools/empty-transparent.png">
+      <div class="bottomblur">
+      </div>
 
-<div id="modal" onclick="if(event.target===this) this.style.display='none'">
-  <div id="box">
+      <br><br><br>
+      <img id="fullscreenImageId" class="fullscreenImage" src="https://onlinepngtools.com/images/examples-onlinepngtools/empty-transparent.png">
+
+      <div id="modal" onclick="if(event.target===this) this.style.display='none'">
+        <div id="box">
+
+          <img class="kontoProfile" id="profilepictureDisplay" src="" alt="" style="margin-left: 0px; padding-left: 0px;">
+          <img src='https://static.vecteezy.com/system/resources/thumbnails/047/309/973/small/verified-badge-profile-icon-png.png' id='PageBadge' alt='' style='display: none; right: 6.5%; top: 6.5%; position: absolute; width: 35px; height: 35px;' />
+          
+          <br> <br> <br> <br> <br> <br> <br>
     
-    <img class="kontoProfile" id="profilepictureDisplay" src="" alt="" style="margin-left: 0px; padding-left: 0px;">
-    <br> <br> <br> <br> <br> <br> <br>
-    
-    <h1 style="margin-left: 0px; padding-left: 0px;">Brukernavn:</h1>
-    <h2 id="usernameDisplay" style="margin-left: 0px; padding-left: 0px;"></h2>
+          <h1 style="margin-left: 0px; padding-left: 0px;">Brukernavn:</h1>
+          <h2 id="usernameDisplay" style="margin-left: 0px; padding-left: 0px; max-width: fit-content; text-overflow: clip; overflow: auto;"></h2>
 
-    <h1 style="margin-left: 0px; padding-left: 0px;">Biografi:</h1>
-    <h2 id="bioDisplay" style="margin-left: 0px; padding-left: 0px;"></h2>
+          <h1 style="margin-left: 0px; padding-left: 0px;">Biografi:</h1>
+          <h2 id="bioDisplay" style="margin-left: 0px; padding-left: 0px; max-width: fit-content; text-overflow: clip; overflow: auto;"></h2>
 
-  </div>
-</div>
- 
+          <button style="margin-left: 0px;" class="konto" id="AddFriend">Legg til Venn</button>
+
+        </div>
+      </div>
+    </body>
+</html>
+
 <script>
 
 var firebaseConfig = {
@@ -82,6 +101,7 @@ function generatePassword() {
   return Math.floor(Math.random() * 10000);
 }
 
+var addToFollowingId = 0
 var userId = localStorage.getItem('UserId');
 function createAndSaveNewUserId() {
     userId = generateUserId();
@@ -93,6 +113,7 @@ function createAndSaveNewUserId() {
         bio: "Ingenting",
         password: "XsPE" + randomPassword + "E43",
         picture: "None",
+        following: ["None"],
         admin: "false",
     });
 }
@@ -115,11 +136,22 @@ firebase.database().ref("userIds/" + userId + "/name").once("value").then(snapsh
 var profilBilde = "None"
 firebase.database().ref("userIds/" + userId + "/picture").once("value").then(snapshot => {
     profilBilde = snapshot.val() || "None"; 
+    if(profilBilde == "None"){
+      document.getElementById("myProfilePic").style.display = "none"
+    }else{
+      document.getElementById("myProfilePic").style.display = "flex"
+      document.getElementById("myProfilePic").src = profilBilde; 
+    }
+    
 });
 
 var adminCommands = "false"
 firebase.database().ref("userIds/" + userId + "/admin").once("value").then(snapshot => {
     adminCommands = snapshot.val() || "false"; 
+    if(adminCommands == "true"){
+      document.getElementById("Bakgrunn").style.display = "flex";
+    }
+
 });
 
 var isDark = "false";
@@ -143,11 +175,11 @@ function CheckAdmin(){
     if(adminCommands == "false"){    
        firebase.database().ref("userIds/" + userId).update({
             admin: "true"
-        });
+      });
     }else{    
        firebase.database().ref("userIds/" + userId).update({
             admin: "false"
-        });
+      });
     }
 
     location.reload();
@@ -253,18 +285,17 @@ firebase.database().ref("messages").on("child_added", function (snapshot) {
       }
     }
     
-    if (isAdmin) {
-      headerHtml += `<img src='https://static.vecteezy.com/system/resources/thumbnails/047/309/973/small/verified-badge-profile-icon-png.png' class='profileBadge' alt='' style='width: 20px; height: 20px;' />`;
-    }
+    //if (isAdmin) {
+    //  headerHtml += `<img src='https://static.vecteezy.com/system/resources/thumbnails/047/309/973/small/verified-badge-profile-icon-png.png' class='profileBadge' alt='' style='width: 20px; height: 20px;' />`;
+    //}
 
     if (profilePicUrl !== "None" && isValidImageUrl(profilePicUrl)) {
-      //headerHtml += `<img src='${profilePicUrl}' class='profilePic' alt='' style='width: 35px; height: 35px;' />`;
       headerHtml += `<img onclick="openProfileModal('${messageUserId}')" src='${profilePicUrl}' class='profilePic' alt='' style='width: 35px; height: 35px; cursor:pointer;' />`;
     }
 
-    headerHtml += `<span class='senderName' style='font-weight: normal; font-size: 25px;'>&nbsp;${senderName}</span>`;
-    headerHtml += `<span class='timestamp' style='font-weight: normal; font-size: 17.5px; padding-top: 6.5px;'>&nbsp;${formatRelativeTime(messageData.timestamp)}</span>`;
-   
+    headerHtml += `<span onclick="openProfileModal('${messageUserId}')" class='senderName' style='font-weight: normal; font-size: 25px;'>&nbsp;${senderName}</span>`;
+    headerHtml += `<span class='timestamp' style='font-weight: normal; font-size: 15px; padding-top: 6.5px;'>&nbsp;${formatRelativeTime(messageData.timestamp)}</span>`;
+    
     li.querySelector(".messageHeader").innerHTML = headerHtml;
 
     var message = messageData.message;
@@ -287,25 +318,93 @@ firebase.database().ref("messages").on("child_added", function (snapshot) {
 
 });
 
-function openProfileModal(userId) {
+//function openProfileModal(userIdNew) {
+//  const modal = document.getElementById('modal');
+//  const profilePic = document.getElementById('profilepictureDisplay');
+//  const username = document.getElementById('usernameDisplay');
+//  const bio = document.getElementById('bioDisplay');
+//
+//  profilePic.src = '';
+//  username.textContent = '';
+//  bio.textContent = '';
+//  modal.style.display = 'flex';
+//
+//  firebase.database().ref('userIds/' + userIdNew).once('value').then(snapshot => {
+//    const data = snapshot.val() || {};
+//    profilePic.src = (data.picture && isValidImageUrl(data.picture)) ? data.picture : 'default-profile.png';
+//    username.textContent = data.name || 'Anonym';
+//    bio.textContent = data.bio || 'Ingen biografi tilgjengelig.';
+//    addToFollowingId = userIdNew
+//  });
+//}
+
+function openProfileModal(userIdNew) {
   const modal = document.getElementById('modal');
   const profilePic = document.getElementById('profilepictureDisplay');
   const username = document.getElementById('usernameDisplay');
   const bio = document.getElementById('bioDisplay');
+  const badge = document.getElementById('PageBadge');
 
   profilePic.src = '';
   username.textContent = '';
   bio.textContent = '';
-  modal.style.display = 'flex';
+  badge.style.display = 'none';
+  document.getElementById("AddFriend").textContent = "";
 
-firebase.database().ref('userIds/' + userId).once('value').then(snapshot => {
+  addToFollowingId = userIdNew;
+  const userRef = firebase.database().ref("userIds/" + userId + "/following");
+
+  userRef.once('value').then(snapshot => {
+    let following = snapshot.val() || [];
+    const isFriend = following.includes(addToFollowingId);
+
+    document.getElementById("AddFriend").textContent = isFriend ? "Slutt å Følge" : "Følg";
+  }).catch(error => {
+    console.error("Error fetching following:", error);
+  });
+
+  firebase.database().ref('userIds/' + userIdNew).once('value').then(snapshot => {
     const data = snapshot.val() || {};
     profilePic.src = (data.picture && isValidImageUrl(data.picture)) ? data.picture : 'default-profile.png';
     username.textContent = data.name || 'Anonym';
     bio.textContent = data.bio || 'Ingen biografi tilgjengelig.';
+
+    if(data.admin == "true"){
+      badge.style.display = 'flex';
+    }else{
+      badge.style.display = 'none';
+    }
+
+  }).catch(error => {
+    console.error("Error fetching profile data:", error);
   });
+
+  modal.style.display = 'flex';
 }
 
+document.getElementById("AddFriend").onclick = function() {AddFriend()};
+function AddFriend() {
+  const userRef = firebase.database().ref("userIds/" + userId + "/following");
+  userRef.once('value').then(snapshot => {
+    let following = snapshot.val() || [];
+
+    const index = following.indexOf(addToFollowingId);
+    if (index === -1) {
+      following.push(addToFollowingId);
+    } else {
+      following.splice(index, 1);
+    }
+
+    document.getElementById("AddFriend").textContent = "...";
+    return userRef.set(following).then(() => {
+      if (index === -1) {
+        document.getElementById("AddFriend").textContent = "Slutt å Følge";
+      } else {
+        document.getElementById("AddFriend").textContent = "Følg";
+      }
+    });
+  });
+}
 
 function isValidImageUrl(url) {
   var imageRegex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif|svg))/i;
@@ -362,10 +461,12 @@ function clearNotification() {
 }
 
 function scrollToBottom() {
+    setTimeout(() => {
         window.scrollTo({
-        top: document.body.scrollHeight,
-        behavior: 'smooth'
-    });
+            top: document.body.scrollHeight,
+            behavior: 'smooth'
+        });
+    }, 100);
 }
 
 window.addEventListener('focus', function() {
@@ -410,7 +511,7 @@ document.getElementById("Bakgrunn").onclick = function() {Bakgrunn()};
 function Bakgrunn(){
   var nyttBakgrunnsbilde = prompt("Bytt bakgrunnsbilde");   
   if (nyttBakgrunnsbilde && isValidImageUrl(nyttBakgrunnsbilde)) {
-        
+       
   firebase.database().ref("public").update({
     "backgroundImage": nyttBakgrunnsbilde
   });           
@@ -440,6 +541,5 @@ firebase.database().ref("public").on("value", function(snapshot) {
       
     </body>
 </html>
-
 
 
