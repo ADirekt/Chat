@@ -1,4 +1,3 @@
-
 body {
     text-align: center;
     background-color: rgb(255, 255, 255);
@@ -41,6 +40,20 @@ h2 {
     font-size: 25px;
     color: rgb(0, 0, 0);
     margin-top: -15px;
+    overflow: hidden;
+    max-width: 12ch;
+    text-overflow: ellipsis;
+}
+
+ul{
+    font-family: 'Arial';
+    font-weight: bolder;
+    margin-left: 75px;
+    font-size: 25px;
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    list-style-type: none;
+    text-align: center;
 }
 
 .topbar {
@@ -91,13 +104,13 @@ h2 {
     height: 125px;
     object-fit: cover; 
     background-color: #f5f5f5;
-
     color: rgba(0, 0, 0, 0.474);
-    outline: 1.5px solid rgba(112, 113, 122, 0.185);
+    outline: 1.5px solid rgba(196, 196, 196, 0.445);
     transition: scale 0.2s;
 }
 
 .kontoProfile:hover{
+    outline: 1.5px solid rgb(128, 128, 128);
     scale: 105%;
     cursor: grab;
 }
@@ -119,15 +132,16 @@ h2 {
     border-radius: 25px;
     border: none;
     padding: 5px 15px;
-    cursor: pointer;
+    cursor: grab;
     font-size: 20px;
     width: 275px;
     height: 50px;
     margin-right: 0px;
 
-    color: rgb(0, 0, 0);
-    background-color: #ffffff;
-    outline: 1.5px solid rgba(112, 113, 122, 0.185);
+    color: #ffffff;
+    background-color: #201f1f;
+    background: linear-gradient(135deg, #201f1f, #3b3939);
+    outline: 1.5px solid rgb(29, 29, 29);
     animation: buttonGeneral 1s ease-out forwards;
     transition: scale 0.15s;
 }
@@ -137,10 +151,7 @@ h2 {
     display: block;
     padding-left: 15px;
     margin-top: 1.5px;
-    margin-left: 75px;
-
-    font-family: 'Arial';
-    font-weight: bolder;   
+    margin-left: 75px;  
     border-radius: 25px;
     border: none;
     padding: 5px 15px;
@@ -151,18 +162,17 @@ h2 {
     scale: 105%;
     cursor: grab;
     
-
-    color: rgb(0, 0, 0);
-    background-color: #ffffff;
-    outline: 1.5px solid rgba(112, 113, 122, 0.479);
-    box-shadow: 0px 0px 10px rgba(142, 144, 196, 0.3); 
+    color: rgb(255, 255, 255);
+    background-color: #000000;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3); 
+    outline: 1.5px solid rgb(0, 0, 0);
     animation: buttonGeneral 1s ease-out forwards;
     transition: scale 0.15s;
-
 }
 
 .konto:active {
     cursor: grabbing;
+    scale: 90%;
 }
 
 .topbar button {
@@ -179,72 +189,22 @@ h2 {
     color: rgb(0, 0, 0);
     background-color: #ffffff;
     outline: 1.5px solid rgba(112, 113, 122, 0.185);
-    animation: buttonGeneral 1s ease-out forwards;
+    animation: buttonGeneral 0.5s ease-out forwards;
     transition: scale 0.15s;
-
 }
 
 .topbar button:hover {   
     width: auto;
     margin-right: 0px;
     cursor: grab;
-    scale: 110%;
-    
+    scale: 110%;   
     background-color: #ffffff; 
     outline: 1.5px solid rgba(112, 113, 122, 0.479);
-    box-shadow: 0px 0px 10px rgba(142, 144, 196, 0.3); 
-    
+    box-shadow: 0px 0px 10px rgba(142, 144, 196, 0.3);  
 }
 
 .topbar button:active {
     cursor: grabbing;
-}
-
-@keyframes buttonGeneral {
-    from {
-        margin-right: 15px;
-    }
-    to {
-        margin-right: 0px;
-    }
-}
-
-@keyframes buttonMarginTransition {
-    from {
-        margin-right: 15px;
-    }
-    to {
-        margin-right: 7.5px;
-    }
-}
-
-@keyframes loadMessages {
-    from {
-        filter: blur(5px);
-        color: #ffffff00;
-    }
-    to {
-        filter: blur(0px);
-        color: #000000;
-    }
-}
-
-@keyframes loadInput {
-    from {
-        bottom: -20px; 
-    }
-    to {
-        bottom: 20px; 
-    }
-}
-
-@keyframes loadSend {
-    from {
-        bottom: -20px; 
-    }
-    to {
-        bottom: 22px; 
-    }
 }
 
 #messages{
@@ -262,9 +222,9 @@ h2 {
     padding-bottom: 35px;
 
     backdrop-filter: blur(15px);
-    background-color: #ffffff7c;
+    background-color: #ffffff3a;
     outline: 1.5px solid rgba(196, 196, 196, 0.445);
-    animation: loadMessages 1.5s ease-out forwards;
+    animation: loadMessages 1s ease-out forwards;
 
 }
 
@@ -284,9 +244,9 @@ h2 {
     font-size: 17.5px;
 
     color: #000000;
-    outline: 1.5px solid rgb(196, 196, 196);
+    outline: 1.5px solid rgba(196, 196, 196, 0.445);
     background-color: #ffffff;
-    animation: loadInput 1.5s ease-out forwards;
+    animation: loadInput 0.5s ease-out forwards;
     transition: background-color 0.1s, outline 0.1s, margin 0.1s;
 
 }
@@ -311,7 +271,7 @@ h2 {
         
     color: #ffffff;
     background-color: #201f1f;
-    animation: loadSend 1s ease-out forwards;
+    animation: loadSend 0.6s ease-out forwards;
     transition: background-color 0.1s, outline 0.1s, margin 0.1s, scale 0.2s;
 }
 
@@ -330,7 +290,16 @@ h2 {
     margin-left: -7.5px;
     font-family: 'Arial';
     font-weight: lighter;
+    transition: background-color 0.3s, outline 0.3s, margin 0.3s, scale 0.3s;
+}
 
+.senderName:hover{
+    color: #000000; 
+    cursor: pointer;
+}
+
+.senderName:active{
+    cursor: grabbing;
 }
 
 .timestamp{
@@ -421,7 +390,7 @@ h2 {
     font-size: 20px;
     color:rgba(0, 0, 0, 0.775);
     border: none;
-    border-radius: 15px;     
+    border-radius: 25px;     
     outline: 1.5px solid rgba(196, 196, 196, 0.445);
     transition: background-color 0.3s, outline 0.3s, margin 0.3s, scale 0.3s;
     width: 35px;
@@ -434,9 +403,8 @@ h2 {
 }
 
 .deleteButton:hover {
-    box-shadow: 0px 0px 10px rgba(142, 144, 196, 0.3); 
     background-color: #ffffff;
-    outline: 1.5px solid rgba(219, 220, 231, 0.479);
+    outline: 1.5px solid rgb(128, 128, 128);
     scale: 105%;
     cursor: grab;
 
@@ -449,7 +417,7 @@ h2 {
 .dropdown {
     font-size: 12.5px;
     font-family: 'Arial';
-    font-weight: bolder;
+    font-weight: bold;
     visibility: hidden;
     opacity: 0;
     position: absolute;
@@ -486,7 +454,7 @@ h2 {
     color: rgb(0, 0, 0);  
     border: none;
     border-radius: 52.5px;     
-    transition: background-color 0.3s, outline 0.3s, margin 0.3s, scale 0.3s;
+    transition: background-color 0.3s, outline 0.3s, margin 0.3s, scale 0.3s, filter 0.15s;
     width: 35px;
     height: 35px;
     margin-right: 5.5px;
@@ -496,13 +464,8 @@ h2 {
 }
 
 .profilePic:hover{
-    scale: 135%;
+    filter: brightness(75%);
     cursor: grab;
-}
-
-.profilePic:active{
-    scale: 150%;
-    cursor: grabbing;
 }
 
 .profileBadge {
@@ -514,7 +477,7 @@ h2 {
     color: rgb(0, 0, 0);  
     border: none;
     border-radius: 52.5px;     
-    transition: background-color 0.3s, outline 0.3s, margin 0.3s, scale 0.3s;
+    transition: background-color 0.3s, outline 0.3s, margin 0.3s, scale 0.3s, filter 0.15s, box-shadow 0.15s;
     width: 35px;
     height: 35px;
     margin-right: 5.5px;
@@ -524,13 +487,12 @@ h2 {
 }
 
 .profileBadge:hover{
-    box-shadow: 0px 0px 25px rgba(9, 107, 255, 0.425);
-    scale: 135%;
+    filter: brightness(75%);
 }
 
 br {
-  user-select: none;
-  cursor: grabbing;
+    user-select: none;
+    cursor: grabbing;
 }
 
 #modal {
@@ -545,16 +507,22 @@ br {
 }
 
 #box {
-  background: white;
-  padding: 2em;
-  width: clamp(250px, 80vw, 400px);
-  aspect-ratio: 2.5 / 3;              
-  border-radius: 40px;
-  outline: 1.5px solid rgba(196, 196, 196, 0.445);
-  overflow: auto;
-  box-sizing: border-box;
-  z-index: 6;
-  max-height: 90vh; 
+    background: white;
+    padding: 2em;
+    width: clamp(250px, 80vw, 400px);
+    aspect-ratio: 2.5 / 3;              
+    border-radius: 40px;
+    outline: 1.5px solid rgba(196, 196, 196, 0.445);
+    overflow: auto;
+    box-sizing: border-box;
+    z-index: 6;
+    max-height: 90vh; 
+    animation: openBox 0.2s ease-out forwards;
+    transition: margin-top 0.1s;
+}
+
+#box:hover {
+    margin-top: 5px;
 }
 
 @media (max-width: 600px) {
@@ -565,3 +533,78 @@ br {
   }
 }
 
+@keyframes openBox {
+    from {
+        scale: 95%; 
+        margin-bottom: 25px;
+    }
+    to {
+        scale: 100%; 
+        margin-bottom: 0px;
+    }
+}
+
+@keyframes buttonGeneral {
+    from {
+        margin-right: 15px;
+    }
+    to {
+        margin-right: 0px;
+    }
+}
+
+@keyframes buttonMarginTransition {
+    from {
+        margin-right: 15px;
+    }
+    to {
+        margin-right: 7.5px;
+    }
+}
+
+@keyframes loadMessages {
+    from {
+        filter: blur(5px);
+        color: #ffffff00;
+    }
+    to {
+        filter: blur(0px);
+        color: #000000;
+    }
+}
+
+@keyframes loadInput {
+    from {
+        bottom: -20px; 
+    }
+    to {
+        bottom: 20px; 
+    }
+}
+
+@keyframes loadSend {
+    from {
+        bottom: -20px; 
+    }
+    to {
+        bottom: 22px; 
+    }
+}
+
+::-webkit-scrollbar {
+  width: 12px; 
+}
+
+::-webkit-scrollbar-track {
+  background: #00000000;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #444444;
+  border-radius: 25px;
+  border: 2.5px solid #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #333333;
+}
