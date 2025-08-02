@@ -322,11 +322,9 @@ function toggleTheme() {
             btn.style.width = "75px"
             btn.style.height = "25px"
             btn.style.fontSize = "10px"
-            btn.textContent = 'Delete';
-            btn.onclick = () => {
-              if (confirm(`Delete user ID "${userID}"?`)) {
-                deleteUserID(userID);
-              }
+            btn.textContent = 'Slett';
+            btn.onclick = () => { 
+                deleteUserID(userID);    
             };
 
             li.appendChild(btn);
@@ -336,7 +334,7 @@ function toggleTheme() {
     }
 
     function deleteUserID(userID) {
-      db.ref(`/userids/${userID}`).remove()
+      db.ref(`/userIds/${userID}`).remove()
         .then(() => {
           loadUserIDs();
         })
