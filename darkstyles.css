@@ -1,5 +1,3 @@
-
-
 body {
     text-align: center;
     background-color: rgb(0, 0, 0);
@@ -42,6 +40,20 @@ h2 {
     font-size: 25px;
     color: rgb(255, 255, 255);
     margin-top: -15px;
+    overflow: hidden;
+    max-width: 12ch;
+    text-overflow: ellipsis;
+}
+
+ul{
+    font-family: 'Arial';
+    font-weight: bolder;
+    margin-left: 75px;
+    font-size: 25px;
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+    list-style-type: none;
+    text-align: center;
 }
 
 .topbar {
@@ -73,12 +85,26 @@ h2 {
     justify-content: center;
     gap: 10px;
     z-index: 2000;
-    pointer-events: none;
-    
+    pointer-events: none;  
     background-color: #151516;
     outline: #d3d3d3 solid 1.5px;
     filter:blur(15px);
+}
 
+.bottomblur {
+    position: fixed;
+    bottom: -5%;
+    left: 0;
+    width: 100%;
+    padding: 75px 0;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    z-index: 1;
+    pointer-events: none;   
+    background-color: #00000096;
+    outline: #d3d3d3 solid 1.5px;
+    filter:blur(25px);
 }
 
 .kontoProfile {
@@ -95,9 +121,11 @@ h2 {
 
     color: rgba(255, 255, 255, 0.474);
     outline: 1.5px solid rgba(112, 113, 122, 0.185);
+    transition: scale 0.2s;
 }
 
 .kontoProfile:hover{
+    outline: 1.5px solid rgb(255, 255, 255);
     scale: 105%;
     cursor: grab;
 }
@@ -106,7 +134,6 @@ h2 {
     scale: 110%;
     cursor: grabbing;
 }
-
 
 .konto {
     text-align: left;
@@ -120,7 +147,7 @@ h2 {
     border-radius: 25px;
     border: none;
     padding: 5px 15px;
-    cursor: pointer;
+    cursor: grab;
     font-size: 20px;
     width: 275px;
     height: 50px;
@@ -128,9 +155,19 @@ h2 {
 
     color: rgb(255, 255, 255);
     background-color: #000000;
-    outline: 1.5px solid rgba(112, 113, 122, 0.185);
+    outline: 1.5px solid rgba(112, 113, 122, 0.336);
     animation: buttonGeneral 1s ease-out forwards;
     transition: scale 0.15s;
+}
+
+#SlettKonto { 
+    outline: 1.5px solid rgba(255, 0, 0, 0.208);
+    background: linear-gradient(135deg, #a131313c, #7b09093e);
+}
+
+#SlettKonto:hover { 
+    outline: 1.5px solid rgba(255, 0, 0, 0.081);
+    box-shadow: 0px 0px 10px rgba(185, 10, 10, 0.184); 
 }
 
 .konto:hover {
@@ -138,10 +175,7 @@ h2 {
     display: block;
     padding-left: 15px;
     margin-top: 1.5px;
-    margin-left: 75px;
-
-    font-family: 'Arial';
-    font-weight: bolder;   
+    margin-left: 75px;  
     border-radius: 25px;
     border: none;
     padding: 5px 15px;
@@ -152,18 +186,16 @@ h2 {
     scale: 105%;
     cursor: grab;
     
-
     color: rgb(255, 255, 255);
     background-color: #000000;
-    outline: 1.5px solid rgba(112, 113, 122, 0.479);
-    box-shadow: 0px 0px 10px rgba(142, 144, 196, 0.3); 
-    animation: buttonGeneral 1s ease-out forwards;
+    outline: 1.5px solid rgb(255, 255, 255);
     transition: scale 0.15s;
 
 }
 
 .konto:active {
     cursor: grabbing;
+    scale: 90%;
 }
 
 .topbar button {
@@ -172,7 +204,7 @@ h2 {
     border-radius: 15px;
     border: none;
     padding: 5px 15px;
-    cursor: pointer;
+    cursor: grab;
     font-size: 15px;
     width: auto;
     margin-right: 0px;
@@ -180,7 +212,7 @@ h2 {
     color: rgb(255, 255, 255);
     background-color: #000000;
     outline: 1.5px solid rgba(112, 113, 122, 0.185);
-    animation: buttonGeneral 1s ease-out forwards;
+    animation: buttonGeneral 0.5s ease-out forwards;
     transition: scale 0.15s;
 
 }
@@ -201,53 +233,6 @@ h2 {
     cursor: grabbing;
 }
 
-@keyframes buttonGeneral {
-    from {
-        margin-right: 15px;
-    }
-    to {
-        margin-right: 0px;
-    }
-}
-
-@keyframes buttonMarginTransition {
-    from {
-        margin-right: 15px;
-    }
-    to {
-        margin-right: 7.5px;
-    }
-}
-
-@keyframes loadMessages {
-    from {
-        filter: blur(5px);
-        color: #ffffff00;
-    }
-    to {
-        filter: blur(0px);
-        color: #ffffff;
-    }
-}
-
-@keyframes loadInput {
-    from {
-        bottom: -20px; 
-    }
-    to {
-        bottom: 20px; 
-    }
-}
-
-@keyframes loadSend {
-    from {
-        bottom: -20px; 
-    }
-    to {
-        bottom: 22px; 
-    }
-}
-
 #messages{
     text-align: left;
     text-decoration: none; 
@@ -265,8 +250,7 @@ h2 {
     backdrop-filter: blur(15px);
     background-color: #0000007c;
     outline: 1.5px solid rgba(196, 196, 196, 0.445);
-    animation: loadMessages 1.5s ease-out forwards;
-
+    animation: loadMessages 1s ease-out forwards; 
 }
 
 #messaage{
@@ -283,13 +267,14 @@ h2 {
     border: none; 
     font-weight:lighter;
     font-size: 17.5px;
+    z-index: 2;
 
     color: #ffffff;
     background-color: #000000;
-    outline: 1.5px solid rgb(196, 196, 196);
-    animation: loadInput 1.5s ease-out forwards;
+    outline: 1.5px solid rgba(196, 196, 196, 0.445);
+    animation: loadInput 0.5s ease-out forwards;
     transition: background-color 0.1s, outline 0.1s, margin 0.1s;
-
+    box-shadow: 0px 0px 25px rgb(0, 0, 0);
 }
 
 #messaage:hover {
@@ -308,18 +293,23 @@ h2 {
     height: 45px;
     font-size: 17.5px; 
     font-weight:lighter;
-    scale: 100%;
-        
+    scale: 100%;    
+    z-index: 2;
+
     color: #ffffff;
-    background-color: #1957ff;
-    animation: loadSend 1s ease-out forwards;
+    outline: 1.5px solid rgb(15, 95, 255);
+    background-color: #3d5dff;
+    background: linear-gradient(135deg, #3d5dff, #1e1eba);
+    animation: loadSend 0.6s ease-out forwards;
     transition: background-color 0.1s, outline 0.1s, margin 0.1s, scale 0.2s;
+    box-shadow: 0px 0px 25px rgb(0, 0, 0);
 }
 
 #messaage2:hover {
     cursor: grab;
     scale: 110%;
     background-color: rgb(22, 25, 219);
+    box-shadow: 0px 0px 25px rgba(9, 107, 255, 0.678);
 }
 
 #messaage2:active{
@@ -331,14 +321,22 @@ h2 {
     margin-left: -7.5px;
     font-family: 'Arial';
     font-weight: lighter;
+    transition: background-color 0.3s, outline 0.3s, margin 0.3s, scale 0.3s;
+}
 
+.senderName:hover{
+    color: rgba(255, 255, 255, 0.456); 
+    cursor: pointer;
+}
+
+.senderName:active{
+    cursor: grabbing;
 }
 
 .timestamp{
     color: #ffffff72;
     font-family: 'Arial';
     font-weight: bold;
-
 }
 
 .messageHeader {
@@ -422,7 +420,7 @@ h2 {
     font-size: 20px;
     color:rgba(255, 255, 255, 0.775);
     border: none;
-    border-radius: 15px;     
+    border-radius: 25px;     
     outline: 1.5px solid rgba(196, 196, 196, 0.445);
     transition: background-color 0.3s, outline 0.3s, margin 0.3s, scale 0.3s;
     width: 35px;
@@ -488,7 +486,7 @@ h2 {
     color: rgb(255, 255, 255);  
     border: none;
     border-radius: 52.5px;     
-    transition: background-color 0.3s, outline 0.3s, margin 0.3s, scale 0.3s;
+    transition: background-color 0.3s, outline 0.3s, margin 0.3s, scale 0.3s, filter 0.15s;
     width: 35px;
     height: 35px;
     margin-right: 5.5px;
@@ -498,13 +496,8 @@ h2 {
 }
 
 .profilePic:hover{
-    scale: 135%;
+    filter: brightness(75%);
     cursor: grab;
-}
-
-.profilePic:active{
-    scale: 150%;
-    cursor: grabbing;
 }
 
 .profileBadge {
@@ -516,7 +509,7 @@ h2 {
     color: rgb(255, 255, 255);  
     border: none;
     border-radius: 52.5px;     
-    transition: background-color 0.3s, outline 0.3s, margin 0.3s, scale 0.3s;
+    transition: background-color 0.3s, outline 0.3s, margin 0.3s, scale 0.3s, filter 0.15s, box-shadow 0.15s;
     width: 35px;
     height: 35px;
     margin-right: 5.5px;
@@ -526,12 +519,12 @@ h2 {
 }
 
 .profileBadge:hover{
-    box-shadow: 0px 0px 25px rgba(9, 107, 255, 0.425);
-    scale: 135%;
+    box-shadow: 0px 0px 25px rgb(9, 107, 255);
+    filter: brightness(75%);
 }
 
 br {
-  user-select: none;
+    user-select: none;
 }
 
 #modal {
@@ -546,16 +539,21 @@ br {
 }
 
 #box {
-  background: rgb(0, 0, 0);
-  padding: 2em;
-  width: clamp(250px, 80vw, 400px);
-  aspect-ratio: 2.5 / 3;              
-  border-radius: 40px;
-  outline: 1.5px solid rgba(196, 196, 196, 0.445);
-  overflow: auto;
-  box-sizing: border-box;
-  z-index: 6;
-  max-height: 90vh; 
+    background: rgb(0, 0, 0);
+    padding: 2em;
+    width: clamp(250px, 80vw, 400px);
+    aspect-ratio: 2.5 / 3;              
+    border-radius: 40px;
+    outline: 1.5px solid rgba(196, 196, 196, 0.445);
+    overflow: auto;
+    box-sizing: border-box;
+    z-index: 6;
+    max-height: 90vh; 
+    animation: openBox 0.2s ease-out forwards;
+}
+
+#box:hover {
+ margin-top: 5px;
 }
 
 @media (max-width: 600px) {
@@ -564,4 +562,80 @@ br {
     aspect-ratio: auto;
     max-height: 80vh;
   }
+}
+
+@keyframes openBox {
+    from {
+        scale: 95%; 
+        margin-bottom: 25px;
+    }
+    to {
+        scale: 100%; 
+        margin-bottom: 0px;
+    }
+}
+
+@keyframes buttonGeneral {
+    from {
+        margin-right: 15px;
+    }
+    to {
+        margin-right: 0px;
+    }
+}
+
+@keyframes buttonMarginTransition {
+    from {
+        margin-right: 15px;
+    }
+    to {
+        margin-right: 7.5px;
+    }
+}
+
+@keyframes loadMessages {
+    from {
+        filter: blur(5px);
+        color: #ffffff00;
+    }
+    to {
+        filter: blur(0px);
+        color: #ffffff;
+    }
+}
+
+@keyframes loadInput {
+    from {
+        bottom: -20px; 
+    }
+    to {
+        bottom: 20px; 
+    }
+}
+
+@keyframes loadSend {
+    from {
+        bottom: -20px; 
+    }
+    to {
+        bottom: 22px; 
+    }
+}
+
+::-webkit-scrollbar {
+  width: 12px; 
+}
+
+::-webkit-scrollbar-track {
+  background: #ffffff00;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #797979;
+  border-radius: 25px;
+  border: 3.5px solid #000000b4;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #818181;
 }
