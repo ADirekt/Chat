@@ -12,6 +12,12 @@
     </head>
     <body>
 
+      <!--Ikke stjel kode-->
+      <!--Ikke stjel kode-->
+      <!--Ikke stjel kode-->
+      <!--Ikke stjel kode-->
+      <!--Ikke stjel kode-->
+
       <div class="bottombar">
       </div>
   
@@ -39,13 +45,6 @@
         <div class="button-container">
           <img src='' id="myProfilePic" class='profilePic' alt='' style='width: 27.5px; height: 27.5px; margin-left: -10px; margin-right: -5px; cursor:pointer; display: none;'></img>
         </div>
-
-        <!--<img src='' id="myProfilePic" class='profilePic' alt='' style='width: 27.5px; height: 27.5px; margin-left: -10px; margin-right: -5px; cursor:pointer; display: none;'>-->
-
-        <!--<div class="button-container">
-          <img class="Interaction" style="width: 25px; height: 25px; border-radius: 25px;" src="https://i.ytimg.com/vi/YB3pJlMgYXc/maxresdefault.jpg">
-        </div>-->
-
       </div>
 
       <div class="topblur">
@@ -160,6 +159,8 @@ isDark = localStorage.getItem('dark');
 
 var front = "Slett";
 var back = "Dutch";
+
+document.getElementById("myProfilePic").onclick = function() {openProfileModal(userId)};
 
 document.getElementById("Konto").onclick = function() {Konto()};
 function Konto(){
@@ -277,13 +278,6 @@ firebase.database().ref("messages").on("child_added", function (snapshot) {
     if (isCurrentUser || adminCommands === "true") {
       headerHtml += `<button class='deleteButton' data-id='${messageKey}' onclick='deleteMessage(this);'>...</button>`;
     }
-
-    if (isCurrentUser) {
-    }else{
-      if (document.hidden) {
-        addNotification();
-      }
-    }
     
     //if (isAdmin) {
     //  headerHtml += `<img src='https://static.vecteezy.com/system/resources/thumbnails/047/309/973/small/verified-badge-profile-icon-png.png' class='profileBadge' alt='' style='width: 20px; height: 20px;' />`;
@@ -295,13 +289,11 @@ firebase.database().ref("messages").on("child_added", function (snapshot) {
 
     headerHtml += `<span onclick="openProfileModal('${messageUserId}')" class='senderName' style='font-weight: normal; font-size: 25px;'>&nbsp;${senderName}</span>`;
     headerHtml += `<span class='timestamp' style='font-weight: normal; font-size: 15px; padding-top: 6.5px;'>&nbsp;${formatRelativeTime(messageData.timestamp)}</span>`;
-    
     li.querySelector(".messageHeader").innerHTML = headerHtml;
 
     var message = messageData.message;
     var imageRegex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif|svg))/i;
     var linkRegex = /(https?:\/\/[^\s]+)/g;
-
     var contentHtml = "";
 
     if (imageRegex.test(message)) {
@@ -312,6 +304,14 @@ firebase.database().ref("messages").on("child_added", function (snapshot) {
     }
 
     li.querySelector(".messageContent").innerHTML = contentHtml;
+
+    if (isCurrentUser) {
+    }else{
+      if (document.hidden) {
+        addNotification();
+      }
+    }
+    
   });
 
   updateEmptyMessageNotice();
@@ -344,23 +344,27 @@ function openProfileModal(userIdNew) {
   const username = document.getElementById('usernameDisplay');
   const bio = document.getElementById('bioDisplay');
   const badge = document.getElementById('PageBadge');
+  const friend = document.getElementById('AddFriend');
 
   profilePic.src = '';
   username.textContent = '';
   bio.textContent = '';
   badge.style.display = 'none';
-  document.getElementById("AddFriend").textContent = "";
+  friend.textContent = "";
 
   addToFollowingId = userIdNew;
   const userRef = firebase.database().ref("userIds/" + userId + "/following");
 
+  if(userIdNew == userId){
+    friend.style.display = "none";
+  }else{
+    friend.style.display = "block";
+  }
+
   userRef.once('value').then(snapshot => {
     let following = snapshot.val() || [];
     const isFriend = following.includes(addToFollowingId);
-
-    document.getElementById("AddFriend").textContent = isFriend ? "Slutt å Følge" : "Følg";
-  }).catch(error => {
-    console.error("Error fetching following:", error);
+    friend.textContent = isFriend ? "Slutt å Følge" : "Følg";
   });
 
   firebase.database().ref('userIds/' + userIdNew).once('value').then(snapshot => {
@@ -374,9 +378,6 @@ function openProfileModal(userIdNew) {
     }else{
       badge.style.display = 'none';
     }
-
-  }).catch(error => {
-    console.error("Error fetching profile data:", error);
   });
 
   modal.style.display = 'flex';
@@ -422,9 +423,6 @@ function deleteMessage(self) {
     .then(() => {
       document.getElementById("message-" + messageId)?.remove();
     })
-    .catch(error => {
-      console.error("Error deleting message:", error);
-    });
 }
 
 firebase.database().ref("messages").on("child_removed", function (snapshot) {
@@ -531,15 +529,74 @@ firebase.database().ref("public").on("value", function(snapshot) {
     document.getElementById("fullscreenImageId").src = "https://onlinepngtools.com/images/examples-onlinepngtools/empty-transparent.png";
   }
 });
- 
+
+window.onload = function() {
+  setTimeout(() => {
+    scrollToBottom();
+  }, 1000);
+
+const input = document.getElementById("messaage");
+const writingText = document.getElementById("WritingText");
+let typingTimer;
+
+writingText.textContent = "";
+
+input.addEventListener("input", function () {
+  firebase.database().ref("public").update({
+    "useristyping": myName
+  });
+
+  clearTimeout(typingTimer);
+  typingTimer = setTimeout(function () {
+    firebase.database().ref("public/useristyping").once("value").then(function(snapshot) {
+      const currentTyping = snapshot.val();
+      if (currentTyping === myName) {
+        firebase.database().ref("public").update({
+          "useristyping": "none"
+        });
+      }
+    });
+  }, 500);
+});
+
+firebase.database().ref("public/useristyping").on("value", function(snapshot) {
+  const typingUser = snapshot.val();
+  if (typingUser && typingUser !== "none" && typingUser !== myName) {
+    writingText.textContent = typingUser + " skriver...";
+  } else {
+    writingText.textContent = "";
+  }
+});
+
+
+
+
+};
+
+
+
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
 </script>
       <ul id="messages"><p1 id="emptyMessageNotice">Vær den første til å skrive noe</p1></ul>
         <form onsubmit="return sendMessage();">
         <input id="messaage" placeholder="Skriv" autocomplete="off">
         <input id="messaage2" type="submit">
       </form>
+
+      <p1 id="WritingText">Petter skriver...</p1>
       
     </body>
 </html>
-
-
