@@ -277,6 +277,24 @@ ul{
     box-shadow: 0px 0px 25px rgb(0, 0, 0);
 }
 
+#WritingText{
+    font-family: 'Arial';
+    border-radius: 25px;
+    padding-left: 15px;
+    width: 250px;
+    height: 25px;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    position: fixed;
+    bottom: 75px; 
+    left: 25px; 
+    font-weight:bolder;
+    font-size: 17.5px;
+    z-index: 2;
+    text-align: left;
+    color: #ffffff76;
+}
+
 #messaage:hover {
     outline: 1.5px solid rgb(128, 128, 128);
 }
@@ -351,6 +369,7 @@ ul{
     padding-top: 10px;
     padding-bottom: 7.5px;
     margin-left: -15px; 
+    animation: openBox 0.35s ease-out forwards;
 
 }
 
